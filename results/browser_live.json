@@ -1,0 +1,74 @@
+{
+  "environment": {
+    "browser": "155.0.8059.84",
+    "headless": false,
+    "rendering": "software WebGL"
+  },
+  "scope": "Integrated desktop frontend and browser-owned pointer-lock automation; mobile emulation only, no manual participant or physical device",
+  "runs": [
+    {
+      "sensitivity": 1,
+      "backend": "actual PHP/MySQL",
+      "state": {
+        "exhibits": 17,
+        "rooms": 3,
+        "records": 17
+      },
+      "pointerLockAcquired": true,
+      "pointerLockGetterInjected": false,
+      "input": "Playwright/CDP trusted mouse input after clicking Enter; no human participant",
+      "delivered": [
+        {
+          "trusted": true,
+          "x": 507,
+          "y": 450
+        }
+      ],
+      "errorsBeforeMovement": [
+        "The root document of this element is not valid for pointer lock."
+      ],
+      "errorsAfterMovement": []
+    },
+    {
+      "sensitivity": 1.5,
+      "backend": "actual PHP/MySQL",
+      "state": {
+        "exhibits": 17,
+        "rooms": 3,
+        "records": 17
+      },
+      "pointerLockAcquired": true,
+      "pointerLockGetterInjected": false,
+      "input": "Playwright/CDP trusted mouse input after clicking Enter; no human participant",
+      "delivered": [],
+      "errorsBeforeMovement": [],
+      "errorsAfterMovement": [
+        "Maximum call stack size exceeded.",
+        "Maximum call stack size exceeded.",
+        "Maximum call stack size exceeded.",
+        "Maximum call stack size exceeded.",
+        "Maximum call stack size exceeded."
+      ]
+    }
+  ],
+  "mobileEmulation": {
+    "viewport": [
+      390,
+      844
+    ],
+    "exhibits": 17,
+    "scrollWidth": 390,
+    "touchCapable": true
+  },
+  "summary": {
+    "backendScenesLoaded": 2,
+    "pointerLockAcquired": [
+      true,
+      true
+    ],
+    "baselineTrustedCanvasEvents": 1,
+    "nondefaultCanvasEvents": 0,
+    "nondefaultStackError": true,
+    "mobileEmulatedExhibits": 17
+  }
+}

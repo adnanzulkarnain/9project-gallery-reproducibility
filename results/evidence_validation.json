@@ -1,0 +1,12 @@
+{
+  "csv_statistics_verified": true,
+  "generator_scenarios": 35,
+  "thumbnail_failures_before": 26,
+  "thumbnail_failures_after": 0,
+  "output_mutations_detected": 14,
+  "source_mutations_detected": 2,
+  "browser_evidence_verified": true,
+  "backend_cases_verified": 42,
+  "linux_comparison_verified": true,
+  "source_sha256": "36b721c91c346a0be961546b9f5806a4ecd7eacca10ffe1b5425c650ba7c5dfc"
+}

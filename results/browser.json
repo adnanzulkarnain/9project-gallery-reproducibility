@@ -1,0 +1,752 @@
+{
+  "scope": "Frontend rendered with fixed JSON API responses from local SQL/image audit. No PHP/MySQL, actual pointer-lock gesture, headset, real mobile device, UX or performance benchmark.",
+  "browserVersion": "155.0.8059.84",
+  "platform": "darwin",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "results": [
+    {
+      "name": "primary-16",
+      "n": 16,
+      "initial": {
+        "aframe": "1.5.0",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+        "webgl": true,
+        "renderer": "WebKit WebGL",
+        "sceneLoaded": true,
+        "exhibits": 16,
+        "paintings": 16,
+        "images": [
+          {
+            "id": "art-fallback",
+            "src": "art/art1.jpg",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-18",
+            "src": "uploads/karya/d4cb6706cabc669b0276940611c1b8f0.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-19",
+            "src": "uploads/karya/2d13ea7ac5935667c08a2305d1911b26.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-20",
+            "src": "uploads/karya/8947bab21ddb769ee441ce0fe7627cec.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-22",
+            "src": "uploads/karya/2a5e7006d93fdd5842ea24b21e6c8db9.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-23",
+            "src": "uploads/karya/b288b611b2973d9bf65326586f78a3cb.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-24",
+            "src": "uploads/karya/dd401583301cf6189bd17422c38b6e43.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-25",
+            "src": "uploads/karya/567a561f0442fb662801c84b05d97609.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-26",
+            "src": "uploads/karya/db948f1d47b88eee4b3509c8bae75ac4.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-27",
+            "src": "uploads/karya/e621a310e296cb6530648abf5e8d1d6a.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-28",
+            "src": "uploads/karya/ef6bcbf781c6ac4ba75e9d663d53f413.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-29",
+            "src": "uploads/karya/3b029de0e0e56d5a2a0cafe89c8c21b8.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-30",
+            "src": "uploads/karya/dff427065a4cb8c17c18e0a0557cdf4e.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-31",
+            "src": "uploads/karya/1c8b193b736bae4ef1547c7ff7554761.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-32",
+            "src": "uploads/karya/e04609c3b5881ad21a791670f56cabff.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-33",
+            "src": "uploads/karya/0d864c20baa060587b2630429f614fbb.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-34",
+            "src": "uploads/karya/32f934ecb96640103381e97161916f41.webp",
+            "loaded": true
+          }
+        ],
+        "rooms": [
+          {
+            "x": 0,
+            "z": 10,
+            "label": "Pintu Masuk",
+            "thumb": null
+          },
+          {
+            "x": 0,
+            "z": 1,
+            "zSouth": 12,
+            "zNorth": -10,
+            "label": "Ruang 1",
+            "thumb": "uploads/karya/d4cb6706cabc669b0276940611c1b8f0.webp"
+          },
+          {
+            "x": 0,
+            "z": -21,
+            "zSouth": -10,
+            "zNorth": -32,
+            "label": "Ruang 2",
+            "thumb": "uploads/karya/3b029de0e0e56d5a2a0cafe89c8c21b8.webp"
+          }
+        ],
+        "wasdOwner": "camera",
+        "cameraLocal": {
+          "x": 0,
+          "y": 1.6,
+          "z": 0
+        },
+        "rigLocal": {
+          "x": 0,
+          "y": 0,
+          "z": 10
+        },
+        "planes": [
+          {
+            "key": "karya-18",
+            "w": 2.06,
+            "h": 2.8,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-19",
+            "w": 2.8,
+            "h": 1.88,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-20",
+            "w": 1.87,
+            "h": 2.8,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-22",
+            "w": 2.02,
+            "h": 2.8,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-23",
+            "w": 2.8,
+            "h": 2.02,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-24",
+            "w": 2.8,
+            "h": 2.77,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-25",
+            "w": 2.18,
+            "h": 2.8,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-26",
+            "w": 2.24,
+            "h": 2.8,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-27",
+            "w": 2.8,
+            "h": 2,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-28",
+            "w": 2.8,
+            "h": 2.01,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-29",
+            "w": 2.79,
+            "h": 2.8,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-30",
+            "w": 2.23,
+            "h": 2.8,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-31",
+            "w": 2.2,
+            "h": 2.8,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-32",
+            "w": 2.8,
+            "h": 2.8,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-33",
+            "w": 2.8,
+            "h": 2.35,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-34",
+            "w": 1.97,
+            "h": 2.8,
+            "paintingMesh": true
+          }
+        ],
+        "pageErrorsBeforeNavigation": []
+      },
+      "navigation": {
+        "moved": {
+          "rig": {
+            "x": 0,
+            "y": 0,
+            "z": 10
+          },
+          "camera": {
+            "x": 0,
+            "y": 1.6,
+            "z": -5.813244506869877
+          }
+        },
+        "teleported": {
+          "rig": {
+            "x": 0,
+            "y": 0,
+            "z": -21
+          },
+          "cameraLocal": {
+            "x": 0,
+            "y": 1.6,
+            "z": -6.06671863931472
+          },
+          "cameraWorld": {
+            "x": 0,
+            "y": 1.6,
+            "z": -27.066718639314722
+          }
+        },
+        "collision": {
+          "clampedX": 10.2,
+          "bound": 10.2,
+          "wallCount": 12
+        },
+        "sensitivity": {
+          "capture": 0,
+          "downstream": 0,
+          "injectedPointerLock": true
+        },
+        "errorsBeforeSensitivity": [],
+        "errorsFromSensitivity": [
+          "Maximum call stack size exceeded.",
+          "Maximum call stack size exceeded.",
+          "Maximum call stack size exceeded.",
+          "Maximum call stack size exceeded.",
+          "Maximum call stack size exceeded.",
+          "Maximum call stack size exceeded."
+        ]
+      },
+      "pageErrors": [
+        "Maximum call stack size exceeded.",
+        "Maximum call stack size exceeded.",
+        "Maximum call stack size exceeded.",
+        "Maximum call stack size exceeded.",
+        "Maximum call stack size exceeded.",
+        "Maximum call stack size exceeded."
+      ],
+      "consoleErrors": [],
+      "httpFailures": []
+    },
+    {
+      "name": "raw-17",
+      "n": 17,
+      "initial": {
+        "aframe": "1.5.0",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+        "webgl": true,
+        "renderer": "WebKit WebGL",
+        "sceneLoaded": true,
+        "exhibits": 17,
+        "paintings": 17,
+        "images": [
+          {
+            "id": "art-fallback",
+            "src": "art/art1.jpg",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-18",
+            "src": "uploads/karya/d4cb6706cabc669b0276940611c1b8f0.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-19",
+            "src": "uploads/karya/2d13ea7ac5935667c08a2305d1911b26.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-20",
+            "src": "uploads/karya/8947bab21ddb769ee441ce0fe7627cec.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-22",
+            "src": "uploads/karya/2a5e7006d93fdd5842ea24b21e6c8db9.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-23",
+            "src": "uploads/karya/b288b611b2973d9bf65326586f78a3cb.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-24",
+            "src": "uploads/karya/dd401583301cf6189bd17422c38b6e43.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-25",
+            "src": "uploads/karya/567a561f0442fb662801c84b05d97609.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-26",
+            "src": "uploads/karya/db948f1d47b88eee4b3509c8bae75ac4.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-27",
+            "src": "uploads/karya/e621a310e296cb6530648abf5e8d1d6a.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-28",
+            "src": "uploads/karya/ef6bcbf781c6ac4ba75e9d663d53f413.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-29",
+            "src": "uploads/karya/3b029de0e0e56d5a2a0cafe89c8c21b8.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-30",
+            "src": "uploads/karya/dff427065a4cb8c17c18e0a0557cdf4e.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-31",
+            "src": "uploads/karya/1c8b193b736bae4ef1547c7ff7554761.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-32",
+            "src": "uploads/karya/e04609c3b5881ad21a791670f56cabff.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-33",
+            "src": "uploads/karya/0d864c20baa060587b2630429f614fbb.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-34",
+            "src": "uploads/karya/32f934ecb96640103381e97161916f41.webp",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-35",
+            "src": "uploads/karya/bff0e118e6fa38dd713d372bde4f61c7.webp",
+            "loaded": true
+          }
+        ],
+        "rooms": [
+          {
+            "x": 0,
+            "z": 10,
+            "label": "Pintu Masuk",
+            "thumb": null
+          },
+          {
+            "x": 0,
+            "z": 1,
+            "zSouth": 12,
+            "zNorth": -10,
+            "label": "Ruang 1",
+            "thumb": "uploads/karya/d4cb6706cabc669b0276940611c1b8f0.webp"
+          },
+          {
+            "x": 0,
+            "z": -21,
+            "zSouth": -10,
+            "zNorth": -32,
+            "label": "Ruang 2",
+            "thumb": "uploads/karya/3b029de0e0e56d5a2a0cafe89c8c21b8.webp"
+          },
+          {
+            "x": 0,
+            "z": -43,
+            "zSouth": -32,
+            "zNorth": -54,
+            "label": "Ruang 3",
+            "thumb": null
+          }
+        ],
+        "wasdOwner": "camera",
+        "cameraLocal": {
+          "x": 0,
+          "y": 1.6,
+          "z": 0
+        },
+        "rigLocal": {
+          "x": 0,
+          "y": 0,
+          "z": 10
+        },
+        "planes": [
+          {
+            "key": "karya-18",
+            "w": 2.06,
+            "h": 2.8,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-19",
+            "w": 2.8,
+            "h": 1.88,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-20",
+            "w": 1.87,
+            "h": 2.8,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-22",
+            "w": 2.02,
+            "h": 2.8,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-23",
+            "w": 2.8,
+            "h": 2.02,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-24",
+            "w": 2.8,
+            "h": 2.77,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-25",
+            "w": 2.18,
+            "h": 2.8,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-26",
+            "w": 2.24,
+            "h": 2.8,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-27",
+            "w": 2.8,
+            "h": 2,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-28",
+            "w": 2.8,
+            "h": 2.01,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-29",
+            "w": 2.79,
+            "h": 2.8,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-30",
+            "w": 2.23,
+            "h": 2.8,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-31",
+            "w": 2.2,
+            "h": 2.8,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-32",
+            "w": 2.8,
+            "h": 2.8,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-33",
+            "w": 2.8,
+            "h": 2.35,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-34",
+            "w": 1.97,
+            "h": 2.8,
+            "paintingMesh": true
+          },
+          {
+            "key": "karya-35",
+            "w": 2.8,
+            "h": 2.35,
+            "paintingMesh": true
+          }
+        ],
+        "pageErrorsBeforeNavigation": []
+      },
+      "navigation": null,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "httpFailures": []
+    },
+    {
+      "name": "empty",
+      "n": 0,
+      "initial": {
+        "aframe": "1.5.0",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+        "webgl": true,
+        "renderer": "WebKit WebGL",
+        "sceneLoaded": true,
+        "exhibits": 0,
+        "paintings": 0,
+        "images": [
+          {
+            "id": "art-fallback",
+            "src": "art/art1.jpg",
+            "loaded": true
+          }
+        ],
+        "rooms": [
+          {
+            "x": 0,
+            "z": 10,
+            "label": "Pintu Masuk",
+            "thumb": null
+          },
+          {
+            "x": 0,
+            "z": 1,
+            "zSouth": 12,
+            "zNorth": -10,
+            "label": "Ruang 1",
+            "thumb": null
+          }
+        ],
+        "wasdOwner": "camera",
+        "cameraLocal": {
+          "x": 0,
+          "y": 1.6,
+          "z": 0
+        },
+        "rigLocal": {
+          "x": 0,
+          "y": 0,
+          "z": 10
+        },
+        "planes": [],
+        "pageErrorsBeforeNavigation": []
+      },
+      "navigation": null,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "httpFailures": []
+    },
+    {
+      "name": "missing-image",
+      "n": 1,
+      "initial": {
+        "aframe": "1.5.0",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+        "webgl": true,
+        "renderer": "WebKit WebGL",
+        "sceneLoaded": true,
+        "exhibits": 1,
+        "paintings": 1,
+        "images": [
+          {
+            "id": "art-fallback",
+            "src": "art/art1.jpg",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-18",
+            "src": "uploads/karya/missing-image.webp",
+            "loaded": false
+          }
+        ],
+        "rooms": [
+          {
+            "x": 0,
+            "z": 10,
+            "label": "Pintu Masuk",
+            "thumb": null
+          },
+          {
+            "x": 0,
+            "z": 1,
+            "zSouth": 12,
+            "zNorth": -10,
+            "label": "Ruang 1",
+            "thumb": "uploads/karya/missing-image.webp"
+          }
+        ],
+        "wasdOwner": "camera",
+        "cameraLocal": {
+          "x": 0,
+          "y": 1.6,
+          "z": 0
+        },
+        "rigLocal": {
+          "x": 0,
+          "y": 0,
+          "z": 10
+        },
+        "planes": [
+          {
+            "key": "karya-18",
+            "w": 2.06,
+            "h": 2.8,
+            "paintingMesh": true
+          }
+        ],
+        "pageErrorsBeforeNavigation": []
+      },
+      "navigation": null,
+      "pageErrors": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "httpFailures": [
+        {
+          "url": "http://127.0.0.1:60259/uploads/karya/missing-image.webp",
+          "status": 404
+        }
+      ]
+    },
+    {
+      "name": "zero-dimensions",
+      "n": 1,
+      "initial": {
+        "aframe": "1.5.0",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+        "webgl": true,
+        "renderer": "WebKit WebGL",
+        "sceneLoaded": true,
+        "exhibits": 1,
+        "paintings": 1,
+        "images": [
+          {
+            "id": "art-fallback",
+            "src": "art/art1.jpg",
+            "loaded": true
+          },
+          {
+            "id": "karya-img-18",
+            "src": "uploads/karya/d4cb6706cabc669b0276940611c1b8f0.webp",
+            "loaded": true
+          }
+        ],
+        "rooms": [
+          {
+            "x": 0,
+            "z": 10,
+            "label": "Pintu Masuk",
+            "thumb": null
+          },
+          {
+            "x": 0,
+            "z": 1,
+            "zSouth": 12,
+            "zNorth": -10,
+            "label": "Ruang 1",
+            "thumb": "uploads/karya/d4cb6706cabc669b0276940611c1b8f0.webp"
+          }
+        ],
+        "wasdOwner": "camera",
+        "cameraLocal": {
+          "x": 0,
+          "y": 1.6,
+          "z": 0
+        },
+        "rigLocal": {
+          "x": 0,
+          "y": 0,
+          "z": 10
+        },
+        "planes": [
+          {
+            "key": "karya-18",
+            "w": 2.06,
+            "h": 2.8,
+            "paintingMesh": true
+          }
+        ],
+        "pageErrorsBeforeNavigation": []
+      },
+      "navigation": null,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "httpFailures": []
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "Cite this reproducibility package and identify release v1.0.0 when reusing these audit artifacts."
+type: software
+title: "9 Project placement and room navigation audit"
+version: 1.0.0
+date-released: 2026-10-18
+authors:
+  - family-names: Nurfitri
+    given-names: Rina
+  - family-names: Kanthi
+    given-names: Yekti Asmoro
+  - family-names: Zulkarnain
+    given-names: Adnan
+identifiers:
+  - type: other
+    value: 9PROJECT-GALLERY-REPRODUCIBILITY-1.0.0
+    description: Reproducibility package release identifier
+url: "https://github.com/adnanzulkarnain/9project-gallery-reproducibility/releases/tag/v1.0.0"
+license: MIT

@@ -1,0 +1,370 @@
+{
+  "scope": "Isolated PHP/Apache and MySQL integration; no user study or external reproduction",
+  "cases": [
+    {
+      "name": "API collection IDs and order",
+      "expected": [
+        18,
+        19,
+        20,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35
+      ],
+      "observed": [
+        18,
+        19,
+        20,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35
+      ],
+      "passed": true
+    },
+    {
+      "name": "API dimensions match SQL",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "name": "Unauthenticated admin redirect",
+      "expected": 302,
+      "observed": 302,
+      "passed": true
+    },
+    {
+      "name": "Track GET rejected",
+      "expected": 405,
+      "observed": 405,
+      "passed": true
+    },
+    {
+      "name": "Track POST persists row",
+      "expected": [
+        200,
+        true,
+        1
+      ],
+      "observed": [
+        200,
+        true,
+        1
+      ],
+      "passed": true
+    },
+    {
+      "name": "Track stores SHA256-shaped hash",
+      "expected": 64,
+      "observed": 64,
+      "passed": true
+    },
+    {
+      "name": "Wrong password rejected",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "name": "Wrong-password session remains unauthenticated",
+      "expected": 302,
+      "observed": 302,
+      "passed": true
+    },
+    {
+      "name": "Synthetic account login",
+      "expected": 302,
+      "observed": 302,
+      "passed": true
+    },
+    {
+      "name": "Invalid CSRF rejected",
+      "expected": 400,
+      "observed": 400,
+      "passed": true
+    },
+    {
+      "name": "Required title validation",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "name": "Upload JPEG redirects",
+      "expected": 302,
+      "observed": 302,
+      "passed": true
+    },
+    {
+      "name": "Upload JPEG WebP and dimensions",
+      "expected": [
+        "WEBP",
+        1400,
+        700,
+        1400,
+        700
+      ],
+      "observed": [
+        "WEBP",
+        1400,
+        700,
+        1400,
+        700
+      ],
+      "passed": true
+    },
+    {
+      "name": "Edit JPEG metadata",
+      "expected": 302,
+      "observed": 302,
+      "passed": true
+    },
+    {
+      "name": "Edit JPEG persisted title",
+      "expected": "AUDIT edited",
+      "observed": "AUDIT edited",
+      "passed": true
+    },
+    {
+      "name": "Replace JPEG image",
+      "expected": 302,
+      "observed": 302,
+      "passed": true
+    },
+    {
+      "name": "Replace JPEG removes old file",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "name": "Delete JPEG",
+      "expected": 302,
+      "observed": 302,
+      "passed": true
+    },
+    {
+      "name": "Delete JPEG removes row and file",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "name": "Upload PNG redirects",
+      "expected": 302,
+      "observed": 302,
+      "passed": true
+    },
+    {
+      "name": "Upload PNG WebP and dimensions",
+      "expected": [
+        "WEBP",
+        1400,
+        700,
+        1400,
+        700
+      ],
+      "observed": [
+        "WEBP",
+        1400,
+        700,
+        1400,
+        700
+      ],
+      "passed": true
+    },
+    {
+      "name": "PNG transparency flattened onto white",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "name": "Edit PNG metadata",
+      "expected": 302,
+      "observed": 302,
+      "passed": true
+    },
+    {
+      "name": "Edit PNG persisted title",
+      "expected": "AUDIT edited",
+      "observed": "AUDIT edited",
+      "passed": true
+    },
+    {
+      "name": "Replace PNG image",
+      "expected": 302,
+      "observed": 302,
+      "passed": true
+    },
+    {
+      "name": "Replace PNG removes old file",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "name": "Delete PNG",
+      "expected": 302,
+      "observed": 302,
+      "passed": true
+    },
+    {
+      "name": "Delete PNG removes row and file",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "name": "Upload WEBP redirects",
+      "expected": 302,
+      "observed": 302,
+      "passed": true
+    },
+    {
+      "name": "Upload WEBP WebP and dimensions",
+      "expected": [
+        "WEBP",
+        1400,
+        700,
+        1400,
+        700
+      ],
+      "observed": [
+        "WEBP",
+        1400,
+        700,
+        1400,
+        700
+      ],
+      "passed": true
+    },
+    {
+      "name": "Edit WEBP metadata",
+      "expected": 302,
+      "observed": 302,
+      "passed": true
+    },
+    {
+      "name": "Edit WEBP persisted title",
+      "expected": "AUDIT edited",
+      "observed": "AUDIT edited",
+      "passed": true
+    },
+    {
+      "name": "Replace WEBP image",
+      "expected": 302,
+      "observed": 302,
+      "passed": true
+    },
+    {
+      "name": "Replace WEBP removes old file",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "name": "Delete WEBP",
+      "expected": 302,
+      "observed": 302,
+      "passed": true
+    },
+    {
+      "name": "Delete WEBP removes row and file",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "name": "Invalid image rejected",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "name": "Edit unknown record",
+      "expected": 404,
+      "observed": 404,
+      "passed": true
+    },
+    {
+      "name": "Authenticated delete GET rejected",
+      "expected": 405,
+      "observed": 405,
+      "passed": true
+    },
+    {
+      "name": "Logout redirects",
+      "expected": 302,
+      "observed": 302,
+      "passed": true
+    },
+    {
+      "name": "Logout invalidates protected access",
+      "expected": 302,
+      "observed": 302,
+      "passed": true
+    },
+    {
+      "name": "Original collection restored",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    }
+  ],
+  "integrated_browser_executed": true,
+  "runtime": {
+    "php": {
+      "php": "8.2.34",
+      "gd": {
+        "GD Version": "bundled (2.1.0 compatible)",
+        "FreeType Support": false,
+        "GIF Read Support": true,
+        "GIF Create Support": true,
+        "JPEG Support": true,
+        "PNG Support": true,
+        "WBMP Support": true,
+        "XPM Support": false,
+        "XBM Support": true,
+        "WebP Support": true,
+        "BMP Support": true,
+        "AVIF Support": false,
+        "TGA Read Support": true,
+        "JIS-mapped Japanese Font Support": false
+      },
+      "exif": false
+    },
+    "mysql": "8.0.46",
+    "web_image_id": "sha256:0b796c848cc54b428b8a5e049d4e77d06cf83ddd948bd418a93b16192fb654ef",
+    "db_image_id": "sha256:75b77f16c26869f999d0a2b0e2e41b4c6e50fd837001590aecdbad688e03d7ea"
+  },
+  "summary": {
+    "cases": 42,
+    "passed": 42,
+    "failed": 0,
+    "production_database_accessed": false
+  },
+  "disposable_resources_removed": true
+}

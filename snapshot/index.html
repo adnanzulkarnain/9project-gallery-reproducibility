@@ -1,0 +1,2760 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>9 Project - Museum Seni Rupa — Virtual Museum Experience</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- A-Frame (lokal) -->
+    <script src="vendor/aframe.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+
+        body {
+            overflow: hidden;
+            background: #000;
+        }
+
+        /* ================= INTRO OVERLAY ================= */
+        #intro-overlay {
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 50% 30%, rgba(58,48,36,0.55), transparent 60%),
+                linear-gradient(160deg, #14110c 0%, #1e1913 45%, #0d0b08 100%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #ece1c8;
+            text-align: center;
+            padding: 20px;
+            cursor: pointer;
+            transition: opacity 0.8s ease;
+        }
+
+        #intro-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #intro-overlay .brand-line {
+            width: 70px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #b08d3e, transparent);
+            margin: 0 auto 22px;
+        }
+
+        #intro-overlay h1 {
+            font-size: clamp(2.2rem, 6vw, 4.2rem);
+            letter-spacing: 14px;
+            font-weight: 400;
+            color: #e9d9ae;
+            text-shadow: 0 2px 18px rgba(176,141,62,0.35);
+            margin-bottom: 10px;
+        }
+
+        #intro-overlay h2 {
+            font-size: clamp(0.9rem, 2.2vw, 1.2rem);
+            margin-bottom: 42px;
+            font-style: italic;
+            color: #a8926a;
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+
+        #intro-overlay .controls-info {
+            background: rgba(255, 250, 235, 0.04);
+            border: 1px solid rgba(176, 141, 62, 0.35);
+            padding: 26px 44px;
+            border-radius: 4px;
+            margin-bottom: 34px;
+            max-width: 520px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        #intro-overlay .controls-info h3 {
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+            color: #d8c48f;
+            letter-spacing: 4px;
+        }
+
+        #intro-overlay .controls-info p {
+            font-size: 0.92rem;
+            margin: 9px 0;
+            color: #b3a37e;
+        }
+
+        #intro-overlay .controls-info strong { color: #e5d6ae; }
+
+        #intro-overlay .enter-btn {
+            background: linear-gradient(180deg, rgba(176,141,62,0.15), rgba(176,141,62,0.05));
+            border: 1px solid #b08d3e;
+            color: #e9d9ae;
+            padding: 16px 56px;
+            font-size: 1rem;
+            font-family: inherit;
+            letter-spacing: 4px;
+            cursor: pointer;
+            transition: all 0.35s ease;
+            text-transform: uppercase;
+        }
+
+        #intro-overlay .enter-btn:hover {
+            background: #b08d3e;
+            color: #17130c;
+            box-shadow: 0 0 36px rgba(176,141,62,0.55);
+        }
+
+        #intro-overlay .enter-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #intro-overlay .enter-btn:disabled:hover {
+            background: linear-gradient(180deg, rgba(176,141,62,0.15), rgba(176,141,62,0.05));
+            color: #e9d9ae;
+            box-shadow: none;
+        }
+
+        /* ================= HUD ================= */
+        #hud {
+            position: fixed;
+            top: 22px;
+            left: 24px;
+            color: #f1e8d2;
+            z-index: 100;
+            pointer-events: none;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.85);
+        }
+
+        #hud h2 {
+            font-size: 1.15rem;
+            letter-spacing: 5px;
+            font-weight: 400;
+            color: #e9d9ae;
+        }
+
+        #hud p {
+            font-size: 0.78rem;
+            color: #bfae85;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        #controls-hint {
+            position: fixed;
+            bottom: 22px;
+            left: 24px;
+            color: #e8dec4;
+            z-index: 100;
+            pointer-events: none;
+            font-size: 12px;
+            background: rgba(15, 12, 8, 0.55);
+            padding: 10px 16px;
+            border-radius: 3px;
+            border: 1px solid rgba(176,141,62,0.3);
+            backdrop-filter: blur(6px);
+            letter-spacing: 0.5px;
+        }
+
+        /* ================= PANEL INFO KARYA ================= */
+        #art-info-panel {
+            position: fixed;
+            right: -420px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 370px;
+            background: linear-gradient(180deg, #f7f2e6, #efe8d6);
+            color: #2b2115;
+            padding: 0 0 28px;
+            border-left: 4px solid #b08d3e;
+            z-index: 200;
+            transition: right 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            max-height: 86vh;
+            overflow-y: auto;
+            box-shadow: -12px 0 50px rgba(0,0,0,0.5);
+        }
+
+        #art-info-panel.visible { right: 0; }
+
+        #art-info-panel #art-img {
+            width: 100%;
+            display: block;
+            border-bottom: 3px solid #b08d3e;
+            background: #1a150e;
+        }
+
+        #art-info-panel .panel-body { padding: 24px 28px 0; }
+
+        #art-info-panel h2 {
+            font-size: 1.45rem;
+            margin-bottom: 6px;
+            color: #2b2115;
+            letter-spacing: 0.5px;
+        }
+
+        #art-info-panel h4 {
+            font-size: 0.88rem;
+            color: #8a6f3a;
+            font-style: italic;
+            margin-bottom: 16px;
+            font-weight: 400;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(138,111,58,0.25);
+        }
+
+        #art-info-panel p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #4a3d29;
+            text-align: justify;
+        }
+
+        #art-info-panel .close-btn {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            background: rgba(20,15,8,0.55);
+            border: 1px solid rgba(233,217,174,0.4);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            color: #e9d9ae;
+            font-size: 1.15rem;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        /* ================= AUDIO & TOMBOL HUD KANAN ================= */
+        #hud-right-stack {
+            position: fixed;
+            top: 22px;
+            right: 24px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .hud-right-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #audio-control {
+            background: rgba(15, 12, 8, 0.55);
+            color: #e8dec4;
+            border: 1px solid rgba(176,141,62,0.35);
+            padding: 9px 16px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: inherit;
+            letter-spacing: 1px;
+            backdrop-filter: blur(6px);
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(15, 12, 8, 0.55);
+            color: #e8dec4;
+            border: 1px solid rgba(176,141,62,0.35);
+            border-radius: 50%;
+            cursor: pointer;
+            backdrop-filter: blur(6px);
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .icon-btn:hover {
+            background: rgba(176,141,62,0.25);
+            border-color: rgba(176,141,62,0.6);
+        }
+
+        .icon-btn svg { width: 18px; height: 18px; display: block; }
+
+        /* ================= MODAL HUD (pengaturan / tentang / peta) ================= */
+        .hud-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(10, 8, 5, 0.6);
+        }
+
+        .hud-modal.visible { display: flex; }
+
+        .hud-modal-box {
+            position: relative;
+            width: min(360px, 88vw);
+            max-height: 82vh;
+            overflow-y: auto;
+            background: linear-gradient(180deg, #211a12, #17130c);
+            border: 1px solid rgba(176,141,62,0.4);
+            border-radius: 8px;
+            padding: 28px 26px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .hud-modal-box h3 {
+            color: #e9d9ae;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            font-size: 1.05rem;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+        }
+
+        .hud-modal-box p {
+            color: #cdbf9c;
+            font-size: 0.92rem;
+            line-height: 1.7;
+        }
+
+        .hud-modal-box .about-stats {
+            margin-top: 14px;
+            color: #a8926a;
+            font-style: italic;
+            font-size: 0.85rem;
+        }
+
+        .funding-block {
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(176,141,62,0.25);
+        }
+
+        .funder-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 14px;
+            min-height: 40px;
+        }
+
+        .funder-logos img {
+            height: 48px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .funding-note {
+            font-size: 0.82rem;
+            color: #a8926a;
+            margin-bottom: 8px;
+        }
+
+        .funding-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 14px;
+        }
+
+        .funding-list li {
+            font-size: 0.85rem;
+            color: #cdbf9c;
+            line-height: 1.6;
+            padding-left: 14px;
+            position: relative;
+        }
+
+        .funding-list li::before {
+            content: "\2022";
+            position: absolute;
+            left: 0;
+            color: #b08d3e;
+        }
+
+        .funding-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.83rem;
+        }
+
+        .funding-table td {
+            padding: 5px 0;
+            color: #cdbf9c;
+            vertical-align: top;
+        }
+
+        .funding-table td:first-child {
+            color: #a8926a;
+            width: 42%;
+            padding-right: 10px;
+        }
+
+        .hud-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            background: transparent;
+            border: none;
+            color: #bfae85;
+            font-size: 1.4rem;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .hud-modal-close:hover { color: #fff; }
+
+        .setting-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #cdbf9c;
+        }
+
+        .setting-row input[type=range] {
+            flex: 1;
+            max-width: 160px;
+            accent-color: #b08d3e;
+        }
+
+        .map-box { width: min(300px, 88vw); text-align: center; }
+        #map-svg-wrap svg { max-width: 100%; height: auto; }
+        .map-room { fill: rgba(176,141,62,0.18); stroke: rgba(216,196,143,0.6); stroke-width: 1.5; cursor: pointer; transition: fill 0.15s; }
+        .map-room:hover { fill: rgba(176,141,62,0.35); }
+        .map-room-label { fill: #cdbf9c; font-size: 8px; font-family: Georgia, serif; pointer-events: none; }
+        .map-entrance { fill: #8a6f3a; stroke: none; }
+        #map-player-dot { fill: #e9c94a; stroke: #17130c; stroke-width: 1; }
+
+        /* ================= KOMPAS ================= */
+        /* Kanan bawah, ditumpuk di atas bilah panduan kontrol (#controls-hint). */
+        #compass {
+            position: fixed;
+            left: 24px;
+            bottom: 70px;
+            width: 104px;
+            height: 104px;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        #compass .ring {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(15, 12, 8, 0.55);
+            border: 1px solid rgba(176,141,62,0.35);
+            backdrop-filter: blur(6px);
+        }
+
+        #compass .dir {
+            position: absolute;
+            color: #e8dec4;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+        }
+
+        #compass .dir.n { top: 6px; left: 50%; transform: translateX(-50%); }
+        #compass .dir.s { bottom: 6px; left: 50%; transform: translateX(-50%); }
+        #compass .dir.e { right: 8px; top: 50%; transform: translateY(-50%); }
+        #compass .dir.w { left: 8px; top: 50%; transform: translateY(-50%); }
+
+        #compass-needle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            margin-left: -9px;
+            margin-top: -30px;
+            border-left: 9px solid transparent;
+            border-right: 9px solid transparent;
+            border-bottom: 30px solid #fff;
+            transform-origin: 50% 100%;
+            filter: drop-shadow(0 1px 3px rgba(0,0,0,0.6));
+        }
+
+        @media (max-width: 520px) {
+            #compass { left: 14px; bottom: 60px; width: 84px; height: 84px; }
+            #compass .dir { font-size: 10px; }
+            #compass-needle { margin-left: -7px; margin-top: -24px; border-left-width: 7px; border-right-width: 7px; border-bottom-width: 24px; }
+        }
+
+        /* Vignette sinematik di atas kanvas 3D */
+        #vignette {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 50;
+            background: radial-gradient(ellipse at center, transparent 52%, rgba(0,0,0,0.38) 100%);
+        }
+
+        .a-enter-vr { display: block; }
+
+        /* ================= NAVIGASI MOBILE ================= */
+        .a-canvas { touch-action: none; }
+        body { overscroll-behavior: none; }
+
+        /* Joystick virtual (kiri bawah) */
+        #joystick-zone {
+            position: fixed;
+            left: 20px;
+            bottom: 72px;
+            width: 150px;
+            height: 150px;
+            z-index: 150;
+            display: none;
+            touch-action: none;
+        }
+
+        body.mobile #joystick-zone { display: block; }
+
+        #joystick-base {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(176,141,62,0.08), rgba(176,141,62,0.22));
+            border: 1.5px solid rgba(216,196,143,0.55);
+            backdrop-filter: blur(4px);
+        }
+
+        #joystick-stick {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 58px;
+            height: 58px;
+            margin: -29px 0 0 -29px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #d8c48f, #8f7434);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.45);
+            border: 1px solid rgba(255,240,200,0.6);
+        }
+
+        /* Panduan intro: versi desktop vs mobile */
+        .guide-mobile { display: none; }
+        body.mobile .guide-mobile { display: block; }
+        body.mobile .guide-desktop { display: none; }
+
+        /* Penyesuaian tata letak saat mobile — geser ke kanan supaya
+           tidak bertumpuk dengan joystick virtual di kiri bawah. */
+        body.mobile #controls-hint {
+            left: auto;
+            right: 14px;
+            bottom: 14px;
+            max-width: 60vw;
+            text-align: right;
+            white-space: normal;
+            font-size: 11px;
+        }
+
+        body.mobile #compass {
+            left: auto;
+            right: 14px;
+            bottom: 60px;
+            width: 84px;
+            height: 84px;
+        }
+
+        body.mobile #compass .dir { font-size: 10px; }
+
+        body.mobile #compass-needle {
+            margin-left: -7px;
+            margin-top: -24px;
+            border-left-width: 7px;
+            border-right-width: 7px;
+            border-bottom-width: 24px;
+        }
+
+        /* ================= CAROUSEL TELEPORTASI RUANGAN ================= */
+        #room-carousel {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 110;
+            display: none;
+            align-items: center;
+            gap: 6px;
+            max-width: 86vw;
+            background: rgba(15, 12, 8, 0.55);
+            border: 1px solid rgba(176,141,62,0.35);
+            border-radius: 40px;
+            padding: 8px 10px;
+            backdrop-filter: blur(6px);
+        }
+
+        #room-carousel.ready { display: flex; }
+
+        .carousel-arrow {
+            flex: 0 0 auto;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            color: #e8dec4;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-arrow:hover { background: rgba(176,141,62,0.28); }
+
+        #carousel-track {
+            display: flex;
+            gap: 8px;
+            max-width: 252px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+        }
+
+        #carousel-track::-webkit-scrollbar { display: none; }
+
+        .carousel-card {
+            flex: 0 0 auto;
+            width: 76px;
+            height: 52px;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            background: #2a2015;
+        }
+
+        .carousel-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .carousel-card .carousel-label {
+            position: absolute;
+            inset: auto 0 0 0;
+            background: linear-gradient(0deg, rgba(0,0,0,0.75), transparent);
+            color: #f1e8d2;
+            font-size: 9px;
+            text-align: center;
+            padding: 4px 2px 3px;
+            letter-spacing: 0.3px;
+        }
+
+        .carousel-card.no-thumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-card.no-thumb .carousel-label {
+            position: static;
+            background: none;
+            font-size: 10px;
+            padding: 0;
+        }
+
+        .carousel-card:hover { border-color: rgba(216,196,143,0.6); }
+
+        .carousel-card.active {
+            border-color: #e9c94a;
+            box-shadow: 0 0 8px rgba(233,201,74,0.6);
+        }
+
+        @media (max-width: 520px) {
+            #intro-overlay .controls-info { padding: 20px 24px; max-width: 92vw; }
+            #hud h2 { font-size: 0.95rem; letter-spacing: 3px; }
+            #hud p { display: none; }
+            #room-carousel { bottom: 12px; padding: 6px 8px; gap: 4px; }
+            #carousel-track { max-width: 184px; }
+            .carousel-card { width: 56px; height: 40px; }
+            .carousel-arrow { width: 24px; height: 24px; font-size: 11px; }
+            #audio-control { padding: 10px 14px; font-size: 11px; }
+            #hud-right-stack { top: 14px; right: 14px; gap: 8px; }
+            .icon-btn { width: 34px; height: 34px; }
+            .icon-btn svg { width: 15px; height: 15px; }
+            .hud-modal-box { padding: 22px 20px; }
+
+            /* Panel info menjadi bottom-sheet */
+            #art-info-panel {
+                width: 100vw;
+                right: -100vw;
+                left: auto;
+                top: auto;
+                bottom: 0;
+                transform: none;
+                max-height: 62vh;
+                border-left: none;
+                border-top: 4px solid #b08d3e;
+            }
+            #art-info-panel.visible { right: 0; }
+            #art-info-panel #art-img { max-height: 26vh; object-fit: cover; }
+            #art-info-panel .close-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.5rem;
+            }
+        }
+
+        /* ================= TOMBOL & POPUP FEEDBACK ================= */
+        #feedback-btn {
+            position: fixed;
+            right: 24px;
+            bottom: 22px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: rgba(15, 12, 8, 0.55);
+            color: #e8dec4;
+            border: 1px solid rgba(176,141,62,0.35);
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: inherit;
+            letter-spacing: 1px;
+            backdrop-filter: blur(6px);
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        #feedback-btn:hover {
+            background: rgba(176,141,62,0.25);
+            border-color: rgba(176,141,62,0.6);
+        }
+
+        #feedback-btn svg { width: 16px; height: 16px; display: block; flex: 0 0 auto; }
+
+        body.mobile #feedback-btn { right: 14px; bottom: 62px; }
+
+        .feedback-box { text-align: center; width: min(340px, 88vw); }
+        .feedback-box .brand-line {
+            width: 56px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #b08d3e, transparent);
+            margin: 0 auto 16px;
+        }
+        .feedback-box h3 { margin-bottom: 8px; }
+        .feedback-box .feedback-lead { font-size: 0.86rem; margin-bottom: 20px; }
+
+        .feedback-qr {
+            display: inline-block;
+            padding: 12px;
+            background: #fff;
+            border-radius: 6px;
+            border: 3px solid #b08d3e;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+        }
+        .feedback-qr img { display: block; width: 200px; height: 200px; }
+
+        .feedback-scan {
+            margin-top: 14px;
+            font-size: 0.78rem !important;
+            font-style: italic;
+            letter-spacing: 1px;
+            color: #a8926a !important;
+        }
+
+        .feedback-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 16px 0 14px;
+            color: #8a7650;
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .feedback-divider::before, .feedback-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(176,141,62,0.28);
+        }
+
+        .feedback-link {
+            display: block;
+            padding: 11px 14px;
+            background: linear-gradient(180deg, #c9a24d, #a98630);
+            color: #1a140a;
+            text-decoration: none;
+            border-radius: 3px;
+            font-size: 0.82rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: filter 0.15s;
+        }
+        .feedback-link:hover { filter: brightness(1.12); }
+        .feedback-url {
+            margin-top: 10px;
+            font-size: 0.74rem !important;
+            color: #8a7650 !important;
+            word-break: break-all;
+        }
+
+        @media (max-width: 520px) {
+            #feedback-btn { padding: 0; width: 34px; height: 34px; justify-content: center; border-radius: 50%; }
+            #feedback-btn span { display: none; }
+            .feedback-qr img { width: 170px; height: 170px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- INTRO OVERLAY -->
+    <div id="intro-overlay">
+        <div class="brand-line"></div>
+        <h1>9 Project</h1>
+        <h2>Museum Seni Rupa</h2>
+        <div class="controls-info">
+            <h3>&mdash; PANDUAN KUNJUNGAN &mdash;</h3>
+            <div class="guide-desktop">
+                <p><strong>W A S D</strong> / Panah &mdash; Berjalan menyusuri museum</p>
+                <p><strong>Mouse</strong> &mdash; Melihat sekeliling</p>
+                <p><strong>Klik lukisan</strong> &mdash; Membaca kisah di baliknya</p>
+                <p><strong>Klik cakram emas</strong> di lantai &mdash; Teleportasi</p>
+            </div>
+            <div class="guide-mobile">
+                <p><strong>Joystick kiri</strong> &mdash; Berjalan menyusuri museum</p>
+                <p><strong>Seret layar</strong> &mdash; Melihat sekeliling</p>
+                <p><strong>Ketuk lukisan</strong> &mdash; Membaca kisah di baliknya</p>
+                <p><strong>Ketuk cakram emas</strong> di lantai &mdash; Teleportasi</p>
+            </div>
+        </div>
+        <button class="enter-btn" id="enter-btn" disabled>Memuat Koleksi&hellip;</button>
+    </div>
+
+    <!-- HUD -->
+    <div id="hud">
+        <h2>9 PROJECT</h2>
+        <p>Museum Seni Rupa</p>
+    </div>
+
+    <div id="controls-hint">
+        WASD bergerak &bull; Mouse melihat &bull; Klik lukisan untuk kisahnya
+    </div>
+
+    <!-- Tombol musik, pengaturan, layar penuh, info, peta -->
+    <div id="hud-right-stack">
+        <div class="hud-right-row">
+            <button id="audio-control">&#128266; Musik: ON</button>
+            <button id="settings-btn" class="icon-btn" aria-label="Pengaturan" title="Pengaturan"></button>
+        </div>
+        <button id="fullscreen-btn" class="icon-btn" aria-label="Layar penuh" title="Layar penuh"></button>
+        <button id="info-btn" class="icon-btn" aria-label="Tentang" title="Tentang museum"></button>
+        <button id="map-btn" class="icon-btn" aria-label="Peta ruangan" title="Peta ruangan"></button>
+    </div>
+
+    <!-- Kompas arah pandang -->
+    <div id="compass">
+        <div class="ring">
+            <span class="dir n">N</span>
+            <span class="dir e">E</span>
+            <span class="dir s">S</span>
+            <span class="dir w">W</span>
+            <div id="compass-needle"></div>
+        </div>
+    </div>
+
+    <div id="vignette"></div>
+
+    <!-- Carousel teleportasi ruangan -->
+    <div id="room-carousel">
+        <button id="carousel-prev" class="carousel-arrow" aria-label="Sebelumnya">&#10094;</button>
+        <div id="carousel-track"></div>
+        <button id="carousel-next" class="carousel-arrow" aria-label="Berikutnya">&#10095;</button>
+    </div>
+
+    <!-- Joystick virtual untuk mobile -->
+    <div id="joystick-zone">
+        <div id="joystick-base">
+            <div id="joystick-stick"></div>
+        </div>
+    </div>
+
+    <!-- PANEL INFO KARYA -->
+    <div id="art-info-panel">
+        <button class="close-btn" id="close-panel">&times;</button>
+        <img id="art-img" src="" alt="">
+        <div class="panel-body">
+            <h2 id="art-title">Judul</h2>
+            <h4 id="art-artist">Seniman &bull; Tahun</h4>
+            <p id="art-desc">Deskripsi.</p>
+        </div>
+    </div>
+
+    <!-- TOMBOL FEEDBACK -->
+    <button id="feedback-btn" aria-label="Beri feedback" title="Beri feedback">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="13" y2="13"/></svg>
+        <span>Feedback</span>
+    </button>
+
+    <!-- PANEL FEEDBACK -->
+    <div id="feedback-panel" class="hud-modal">
+        <div class="hud-modal-box feedback-box">
+            <button class="hud-modal-close" data-close="feedback-panel">&times;</button>
+            <div class="brand-line"></div>
+            <h3>Beri Masukan</h3>
+            <p class="feedback-lead">Bantu kami menyempurnakan museum ini dengan mengisi formulir singkat.</p>
+            <div class="feedback-qr">
+                <img src="logo/qr-feedback.jpg" alt="QR Code formulir feedback">
+            </div>
+            <p class="feedback-scan">Pindai dengan kamera ponsel Anda</p>
+            <div class="feedback-divider">atau</div>
+            <a class="feedback-link" href="https://forms.gle/93qSTHyUR1wtJpVQ8" target="_blank" rel="noopener">Buka Formulir</a>
+            <p class="feedback-url">forms.gle/93qSTHyUR1wtJpVQ8</p>
+        </div>
+    </div>
+
+    <!-- PANEL PENGATURAN -->
+    <div id="settings-panel" class="hud-modal">
+        <div class="hud-modal-box">
+            <button class="hud-modal-close" data-close="settings-panel">&times;</button>
+            <h3>Pengaturan</h3>
+            <label class="setting-row">
+                <span>Volume Musik</span>
+                <input type="range" id="volume-slider" min="0" max="100" value="25">
+            </label>
+            <label class="setting-row">
+                <span>Sensitivitas Mouse</span>
+                <input type="range" id="sensitivity-slider" min="0.5" max="2.5" step="0.1" value="1">
+            </label>
+        </div>
+    </div>
+
+    <!-- PANEL TENTANG -->
+    <div id="about-panel" class="hud-modal">
+        <div class="hud-modal-box">
+            <button class="hud-modal-close" data-close="about-panel">&times;</button>
+            <h3>Tentang 9 Project</h3>
+            <p id="about-desc">9 Project adalah museum seni rupa virtual yang menghadirkan koleksi karya secara digital. Jelajahi tiap ruangan dan klik lukisan untuk membaca kisah di baliknya.</p>
+            <p id="about-stats" class="about-stats"></p>
+
+            <div class="funding-block">
+                <div class="funder-logos">
+                    <img src="logo/kemendiktisaintek.png" alt="Logo Kementerian Pendidikan Tinggi, Sains, dan Teknologi" onerror="this.style.display='none'">
+                </div>
+                <p class="funding-note">Dikembangkan dengan dukungan pendanaan dari:</p>
+                <ul class="funding-list">
+                    <li>Direktorat Penelitian dan Pengabdian kepada Masyarakat</li>
+                    <li>Direktorat Jenderal Riset dan Pengembangan, Kementerian Pendidikan Tinggi, Sains, dan Teknologi</li>
+                </ul>
+                <table class="funding-table">
+                    <tr><td>Jenis Program</td><td>Program Inovasi Seni Nusantara (PISN)</td></tr>
+                    <tr><td>Tahun Pendanaan</td><td>2026</td></tr>
+                    <tr><td>Ketua Pelaksana</td><td>Rina Nurfitri</td></tr>
+                    <tr><td>Anggota 1</td><td>Adnan Zulkarnain</td></tr>
+                    <tr><td>Anggota 2</td><td>Yekti Asmoro Kanthi</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL PETA -->
+    <div id="map-panel" class="hud-modal">
+        <div class="hud-modal-box map-box">
+            <button class="hud-modal-close" data-close="map-panel">&times;</button>
+            <h3>Peta Ruangan</h3>
+            <div id="map-svg-wrap"></div>
+        </div>
+    </div>
+
+    <!-- ===== TEKSTUR PROSEDURAL (canvas, tidak bergantung CDN) ===== -->
+    <canvas id="floor-canvas" width="1024" height="1024" style="display:none"></canvas>
+    <canvas id="wall-canvas" width="512" height="512" style="display:none"></canvas>
+    <canvas id="ceil-canvas" width="512" height="512" style="display:none"></canvas>
+    <!-- Tekstur daun (latar transparan, dipakai pada plane dua sisi) -->
+    <canvas id="leaf-palm" width="256" height="512" style="display:none"></canvas>
+    <canvas id="leaf-sansevieria" width="128" height="512" style="display:none"></canvas>
+    <canvas id="leaf-dracaena" width="64" height="512" style="display:none"></canvas>
+    <canvas id="leaf-monstera" width="512" height="512" style="display:none"></canvas>
+    <canvas id="leaf-ficus" width="256" height="256" style="display:none"></canvas>
+
+    <script>
+    // ==========================================================
+    // 1) TEKSTUR PROSEDURAL — digambar SEBELUM scene diparse
+    //    agar material langsung memakai hasilnya.
+    // ==========================================================
+    (function paintTextures() {
+        // ---- LANTAI: parket kayu pola anyaman (basket weave) ----
+        var c = document.getElementById('floor-canvas');
+        var ctx = c.getContext('2d');
+        var W = c.width, H = c.height;
+
+        function rand(a, b) { return a + Math.random() * (b - a); }
+
+        var block = 128;
+        var cols = W / block, rows = H / block;
+        var plankW = block / 2;
+
+        function drawPlank(px, py, pw, ph, vertical) {
+            var hue = 27 + rand(-5, 5);
+            var light = 28 + rand(-7, 8);
+            ctx.fillStyle = 'hsl(' + hue + ', 34%, ' + light + '%)';
+            ctx.fillRect(px, py, pw, ph);
+
+            // Serat kayu mengikuti arah plank
+            for (var g = 0; g < 8; g++) {
+                ctx.strokeStyle = 'rgba(35, 20, 8, ' + rand(0.05, 0.16) + ')';
+                ctx.lineWidth = rand(0.5, 1.4);
+                ctx.beginPath();
+                if (vertical) {
+                    var gx = px + rand(3, pw - 3);
+                    ctx.moveTo(gx, py);
+                    ctx.bezierCurveTo(gx + rand(-4, 4), py + ph * 0.33, gx + rand(-4, 4), py + ph * 0.66, gx + rand(-3, 3), py + ph);
+                } else {
+                    var gy = py + rand(3, ph - 3);
+                    ctx.moveTo(px, gy);
+                    ctx.bezierCurveTo(px + pw * 0.33, gy + rand(-4, 4), px + pw * 0.66, gy + rand(-4, 4), px + pw, gy + rand(-3, 3));
+                }
+                ctx.stroke();
+            }
+
+            // Highlight halus di satu tepi
+            ctx.fillStyle = 'rgba(255, 230, 190, 0.06)';
+            if (vertical) ctx.fillRect(px, py, 2, ph); else ctx.fillRect(px, py, pw, 2);
+
+            // Nat gelap di tepi lainnya
+            ctx.fillStyle = 'rgba(12, 7, 3, 0.85)';
+            if (vertical) ctx.fillRect(px + pw - 1.5, py, 1.5, ph); else ctx.fillRect(px, py + ph - 1.5, pw, 1.5);
+        }
+
+        for (var by = 0; by < rows; by++) {
+            for (var bx = 0; bx < cols; bx++) {
+                var x0 = bx * block, y0 = by * block;
+                if ((bx + by) % 2 === 0) {
+                    // Sepasang plank vertikal berdampingan
+                    drawPlank(x0, y0, plankW, block, true);
+                    drawPlank(x0 + plankW, y0, plankW, block, true);
+                } else {
+                    // Sepasang plank horizontal bertumpuk
+                    drawPlank(x0, y0, block, plankW, false);
+                    drawPlank(x0, y0 + plankW, block, plankW, false);
+                }
+            }
+        }
+
+        // Garis kotak anyaman — penegas pola basket weave
+        ctx.fillStyle = 'rgba(10, 6, 2, 0.9)';
+        for (var bi = 0; bi <= cols; bi++) ctx.fillRect(bi * block - 1, 0, 2, H);
+        for (var bj = 0; bj <= rows; bj++) ctx.fillRect(0, bj * block - 1, W, 2);
+
+        // ---- DINDING: plester hangat dengan noise halus ----
+        var wc = document.getElementById('wall-canvas');
+        var wctx = wc.getContext('2d');
+        wctx.fillStyle = '#ece5d6';
+        wctx.fillRect(0, 0, 512, 512);
+        for (var i = 0; i < 9000; i++) {
+            var v = Math.random();
+            wctx.fillStyle = v > 0.5
+                ? 'rgba(255,255,255,' + rand(0.015, 0.05) + ')'
+                : 'rgba(120,105,80,' + rand(0.015, 0.05) + ')';
+            wctx.fillRect(rand(0, 512), rand(0, 512), rand(1, 2.5), rand(1, 2.5));
+        }
+
+        // ---- PLAFON: putih gading bernoise sangat halus ----
+        var cc = document.getElementById('ceil-canvas');
+        var cctx = cc.getContext('2d');
+        cctx.fillStyle = '#f3efe4';
+        cctx.fillRect(0, 0, 512, 512);
+        for (var j = 0; j < 4000; j++) {
+            cctx.fillStyle = 'rgba(150,140,115,' + rand(0.01, 0.04) + ')';
+            cctx.fillRect(rand(0, 512), rand(0, 512), 1.5, 1.5);
+        }
+
+        // ================= TEKSTUR DAUN =================
+
+        // ---- PELEPAH PALEM: tulang tengah + anak daun menyirip ----
+        var pctx = document.getElementById('leaf-palm').getContext('2d');
+        pctx.clearRect(0, 0, 256, 512);
+        pctx.strokeStyle = '#6a7a3a';
+        pctx.lineWidth = 6;
+        pctx.beginPath();
+        pctx.moveTo(128, 512);
+        pctx.quadraticCurveTo(132, 260, 128, 14);
+        pctx.stroke();
+        for (var t = 0; t <= 1; t += 0.028) {
+            var ly = 498 - t * 470;
+            var llen = 115 * (1 - 0.62 * t) + 16;
+            var upAngle = (34 + 22 * t) * Math.PI / 180; // makin ke ujung makin tegak
+            [-1, 1].forEach(function (sgn) {
+                var tipX = 128 + sgn * Math.cos(upAngle) * llen;
+                var tipY = ly - Math.sin(upAngle) * llen;
+                var midX = 128 + sgn * Math.cos(upAngle) * llen * 0.5;
+                var midY = ly - Math.sin(upAngle) * llen * 0.55;
+                pctx.fillStyle = 'hsl(' + (92 + Math.random() * 16) + ', 42%, ' + (24 + Math.random() * 12) + '%)';
+                pctx.beginPath();
+                pctx.moveTo(128, ly + 6);
+                pctx.quadraticCurveTo(midX, midY + 7, tipX, tipY);
+                pctx.quadraticCurveTo(midX, midY - 7, 128, ly - 6);
+                pctx.closePath();
+                pctx.fill();
+            });
+        }
+
+        // ---- SANSEVIERIA: daun pedang, tepi kuning, tengah berpita ----
+        var sctx = document.getElementById('leaf-sansevieria').getContext('2d');
+        sctx.clearRect(0, 0, 128, 512);
+        sctx.beginPath();
+        sctx.moveTo(64, 4);
+        sctx.bezierCurveTo(108, 150, 100, 360, 84, 508);
+        sctx.lineTo(44, 508);
+        sctx.bezierCurveTo(28, 360, 20, 150, 64, 4);
+        sctx.closePath();
+        sctx.fillStyle = '#8fa844'; // margin variegata
+        sctx.fill();
+        sctx.save();
+        sctx.clip();
+        sctx.beginPath();
+        sctx.moveTo(64, 14);
+        sctx.bezierCurveTo(96, 155, 88, 360, 74, 508);
+        sctx.lineTo(54, 508);
+        sctx.bezierCurveTo(40, 360, 32, 155, 64, 14);
+        sctx.closePath();
+        sctx.fillStyle = '#2f5527';
+        sctx.fill();
+        for (var b = 0; b < 22; b++) {
+            sctx.strokeStyle = 'rgba(120, 160, 90, ' + (0.12 + Math.random() * 0.18) + ')';
+            sctx.lineWidth = 3 + Math.random() * 6;
+            var by = 20 + b * 22 + Math.random() * 10;
+            sctx.beginPath();
+            sctx.moveTo(20, by);
+            sctx.quadraticCurveTo(64, by + (Math.random() * 14 - 7), 108, by);
+            sctx.stroke();
+        }
+        sctx.restore();
+
+        // ---- DRACAENA: daun pita ramping bertepi kemerahan ----
+        var dctx = document.getElementById('leaf-dracaena').getContext('2d');
+        dctx.clearRect(0, 0, 64, 512);
+        dctx.beginPath();
+        dctx.moveTo(32, 2);
+        dctx.bezierCurveTo(58, 150, 55, 380, 45, 510);
+        dctx.lineTo(19, 510);
+        dctx.bezierCurveTo(9, 380, 6, 150, 32, 2);
+        dctx.closePath();
+        dctx.fillStyle = '#3f6b35';
+        dctx.fill();
+        dctx.save();
+        dctx.clip();
+        dctx.strokeStyle = 'rgba(122, 74, 58, 0.55)'; // tepi merah tua
+        dctx.lineWidth = 7;
+        dctx.stroke();
+        dctx.strokeStyle = '#6d8a4a'; // tulang tengah
+        dctx.lineWidth = 3;
+        dctx.beginPath();
+        dctx.moveTo(32, 10);
+        dctx.lineTo(32, 510);
+        dctx.stroke();
+        dctx.restore();
+
+        // ---- MONSTERA: daun hati besar, tulang daun, belahan & lubang ----
+        var mctx = document.getElementById('leaf-monstera').getContext('2d');
+        mctx.clearRect(0, 0, 512, 512);
+        mctx.beginPath();
+        mctx.moveTo(256, 10);
+        mctx.bezierCurveTo(420, 90, 470, 260, 380, 400);
+        mctx.bezierCurveTo(340, 460, 290, 490, 256, 500);
+        mctx.bezierCurveTo(222, 490, 172, 460, 132, 400);
+        mctx.bezierCurveTo(42, 260, 92, 90, 256, 10);
+        mctx.closePath();
+        var mg = mctx.createRadialGradient(256, 250, 40, 256, 250, 300);
+        mg.addColorStop(0, '#3a6b33');
+        mg.addColorStop(1, '#274d22');
+        mctx.fillStyle = mg;
+        mctx.fill();
+        // Tulang daun (sebelum belahan agar ikut terpotong)
+        mctx.strokeStyle = 'rgba(180, 210, 150, 0.35)';
+        mctx.lineWidth = 5;
+        mctx.beginPath();
+        mctx.moveTo(256, 20);
+        mctx.lineTo(256, 495);
+        mctx.stroke();
+        mctx.lineWidth = 2.5;
+        for (var vN = 0; vN < 7; vN++) {
+            var vy = 60 + vN * 60;
+            [-1, 1].forEach(function (sgn) {
+                mctx.beginPath();
+                mctx.moveTo(256, vy + 20);
+                mctx.quadraticCurveTo(256 + sgn * 120, vy + 40, 256 + sgn * 210, vy + 80);
+                mctx.stroke();
+            });
+        }
+        // Belahan tepi khas monstera
+        mctx.globalCompositeOperation = 'destination-out';
+        for (var sN = 0; sN < 6; sN++) {
+            var sy = 90 + sN * 62;
+            [-1, 1].forEach(function (sgn) {
+                mctx.beginPath();
+                mctx.moveTo(256 + sgn * 240, sy);
+                mctx.lineTo(256 + sgn * 70, sy + 26);
+                mctx.lineTo(256 + sgn * 240, sy + 44);
+                mctx.closePath();
+                mctx.fill();
+            });
+        }
+        // Lubang oval kecil dekat tulang daun
+        for (var hN = 0; hN < 7; hN++) {
+            mctx.beginPath();
+            mctx.ellipse(256 + (Math.random() * 120 - 60), 120 + Math.random() * 280,
+                6 + Math.random() * 14, 4 + Math.random() * 8,
+                Math.random() * 3, 0, 7);
+            mctx.fill();
+        }
+        mctx.globalCompositeOperation = 'source-over';
+
+        // ---- FICUS: gugus banyak daun oval kecil (untuk tajuk) ----
+        var fctx = document.getElementById('leaf-ficus').getContext('2d');
+        fctx.clearRect(0, 0, 256, 256);
+        for (var lf = 0; lf < 55; lf++) {
+            var lx2 = 20 + Math.random() * 216;
+            var ly2 = 20 + Math.random() * 216;
+            var ls = 10 + Math.random() * 14;
+            fctx.save();
+            fctx.translate(lx2, ly2);
+            fctx.rotate(Math.random() * Math.PI * 2);
+            fctx.fillStyle = 'hsl(' + (95 + Math.random() * 25) + ', 35%, ' + (22 + Math.random() * 16) + '%)';
+            fctx.beginPath();
+            fctx.moveTo(0, -ls);
+            fctx.quadraticCurveTo(ls * 0.45, -ls * 0.35, 0, ls * 0.45);
+            fctx.quadraticCurveTo(-ls * 0.45, -ls * 0.35, 0, -ls);
+            fctx.closePath();
+            fctx.fill();
+            fctx.strokeStyle = 'rgba(200, 230, 170, 0.3)';
+            fctx.lineWidth = 1;
+            fctx.beginPath();
+            fctx.moveTo(0, -ls + 2);
+            fctx.lineTo(0, ls * 0.3);
+            fctx.stroke();
+            fctx.restore();
+        }
+    })();
+
+    // ==========================================================
+    // 2) DATA KOLEKSI MUSEUM
+    //    Diisi secara dinamis dari database (lihat buildGalleryHTML
+    //    di bagian bawah) — bukan lagi data statis.
+    // ==========================================================
+    var ART_DATA = {};
+
+    // ==========================================================
+    // 3) KOMPONEN "exhibit" — membangun satu karya lengkap:
+    //    bingkai berlapis, plakat, armatur lampu sorot,
+    //    dan tali pembatas beludru (stanchion).
+    // ==========================================================
+    AFRAME.registerComponent('exhibit', {
+        schema: {
+            key:   { type: 'string' },
+            src:   { type: 'string' },
+            w:     { default: 3.2 },
+            h:     { default: 2.4 },
+            frame: { default: '#2e2013' },
+            rope:  { default: true }
+        },
+
+        init: function () {
+            var d = this.data;
+            var el = this.el;
+            var info = ART_DATA[d.key] || { title: d.key, artist: '', desc: '' };
+
+            // Offset lokal ke lantai & plafon (entity berada di pusat lukisan)
+            var posY = el.getAttribute('position').y;
+            var floorY = -posY;
+            var ceilY = 6 - posY;
+
+            function add(tag, attrs, parent) {
+                var e = document.createElement(tag);
+                for (var k in attrs) e.setAttribute(k, attrs[k]);
+                (parent || el).appendChild(e);
+                return e;
+            }
+
+            // --- Bingkai luar (kayu/emas) ---
+            add('a-box', {
+                width: d.w + 0.38, height: d.h + 0.38, depth: 0.14,
+                position: '0 0 0', color: d.frame,
+                material: 'roughness: 0.35; metalness: 0.45'
+            });
+            // --- Lis dalam gelap (memberi kedalaman) ---
+            add('a-box', {
+                width: d.w + 0.16, height: d.h + 0.16, depth: 0.16,
+                position: '0 0 0.005', color: '#171008',
+                material: 'roughness: 0.6; metalness: 0.1'
+            });
+            // --- Kanvas lukisan (interaktif) ---
+            var painting = add('a-plane', {
+                class: 'artwork clickable',
+                width: d.w, height: d.h,
+                position: '0 0 0.09',
+                src: d.src,
+                material: 'roughness: 0.88; metalness: 0',
+                'data-key': d.key
+            });
+
+            painting.addEventListener('click', function () {
+                if (window.showArtInfo) window.showArtInfo(d.key);
+            });
+            painting.addEventListener('mouseenter', function () {
+                painting.setAttribute('material', 'emissive', '#3a3a3a');
+                painting.setAttribute('material', 'emissiveIntensity', 0.35);
+            });
+            painting.addEventListener('mouseleave', function () {
+                painting.setAttribute('material', 'emissive', '#000');
+                painting.setAttribute('material', 'emissiveIntensity', 0);
+            });
+
+            // --- Plakat museum di samping kanan lukisan ---
+            // Berjarak lega dari bingkai (gap ±0.26 m) dan dipasang
+            // setinggi mata (±1.6 m dunia). Lebar teks < lebar papan
+            // agar tidak pernah meluber keluar plakat.
+            var plaque = add('a-entity', {
+                position: (d.w / 2 + 0.97) + ' -0.7 0.02'
+            });
+            // Bingkai kuningan tipis
+            add('a-box', {
+                width: 1.04, height: 0.59, depth: 0.015,
+                color: '#a8823f', material: 'metalness: 0.6; roughness: 0.35'
+            }, plaque);
+            // Papan plakat gading
+            add('a-box', {
+                width: 1.0, height: 0.55, depth: 0.025,
+                color: '#f6f2e7', material: 'roughness: 0.55'
+            }, plaque);
+            // Judul karya (maks 2 baris, selalu di dalam papan)
+            add('a-text', {
+                value: info.title, position: '0 0.12 0.025', align: 'center',
+                color: '#241a0e', width: 0.85, 'wrap-count': 18
+            }, plaque);
+            // Garis pemisah emas
+            add('a-box', {
+                width: 0.42, height: 0.008, depth: 0.006,
+                position: '0 -0.03 0.02', color: '#a8823f',
+                material: 'metalness: 0.6; roughness: 0.35'
+            }, plaque);
+            // Seniman & tahun
+            add('a-text', {
+                value: info.artist, position: '0 -0.15 0.025', align: 'center',
+                color: '#7a6540', width: 0.75, 'wrap-count': 32
+            }, plaque);
+
+            // --- Armatur lampu sorot dari plafon ---
+            add('a-cylinder', {
+                radius: 0.02, height: 0.7,
+                position: '0 ' + (ceilY - 0.35) + ' 1.6',
+                color: '#26221c', material: 'metalness: 0.6; roughness: 0.4'
+            });
+            add('a-cylinder', {
+                radius: 0.07, height: 0.24,
+                position: '0 ' + (ceilY - 0.78) + ' 1.55',
+                rotation: '-58 0 0',
+                color: '#1c1914', material: 'metalness: 0.6; roughness: 0.35'
+            });
+            add('a-entity', {
+                light: 'type: spot; color: #fff3da; intensity: 1.45; angle: 33; penumbra: 0.5; distance: 13; castShadow: false',
+                position: '0 ' + (ceilY - 0.82) + ' 1.5',
+                rotation: '-58 0 0'
+            });
+
+            // --- Tali pembatas beludru (stanchion kuningan) ---
+            if (d.rope) {
+                var sx = d.w / 2 + 0.45;
+                var sz = 1.35;
+                var topY = floorY + 0.95;
+                var brass = 'metalness: 0.8; roughness: 0.25';
+
+                [-sx, sx].forEach(function (x) {
+                    var post = add('a-entity', { position: x + ' 0 ' + sz });
+                    add('a-cylinder', {
+                        radius: 0.16, height: 0.03,
+                        position: '0 ' + (floorY + 0.015) + ' 0',
+                        color: '#8f7434', material: brass
+                    }, post);
+                    add('a-cylinder', {
+                        radius: 0.025, height: 0.95,
+                        position: '0 ' + (floorY + 0.49) + ' 0',
+                        color: '#b08d3e', material: brass
+                    }, post);
+                    add('a-sphere', {
+                        radius: 0.05,
+                        position: '0 ' + (topY + 0.03) + ' 0',
+                        color: '#b08d3e', material: brass
+                    }, post);
+                });
+
+                // Tali melengkung: dua segmen miring bertemu di tengah
+                var sag = 0.14;
+                var len = Math.sqrt(sx * sx + sag * sag);
+                var ang = Math.atan2(sag, sx) * 180 / Math.PI;
+                add('a-cylinder', {
+                    radius: 0.02, height: len,
+                    position: (-sx / 2) + ' ' + (topY - sag / 2) + ' ' + sz,
+                    rotation: '0 0 ' + (90 - ang),
+                    color: '#6e1f28', material: 'roughness: 0.95'
+                });
+                add('a-cylinder', {
+                    radius: 0.02, height: len,
+                    position: (sx / 2) + ' ' + (topY - sag / 2) + ' ' + sz,
+                    rotation: '0 0 ' + (90 + ang),
+                    color: '#6e1f28', material: 'roughness: 0.95'
+                });
+            }
+        }
+    });
+
+    // ==========================================================
+    // 4) KOMPONEN "plant" — tanaman hias dalam pot, 5 jenis:
+    //    ficus, palm, sansevieria, dracaena, monstera.
+    //    Tiap instans diberi variasi acak (ukuran, rotasi,
+    //    jumlah & sudut daun) agar tidak ada dua yang identik.
+    // ==========================================================
+    AFRAME.registerComponent('plant', {
+        schema: { type: { default: 'ficus' } },
+
+        init: function () {
+            var el = this.el;
+            var type = this.data.type;
+            var DEG = Math.PI / 180;
+            var i;
+
+            function add(tag, attrs, parent) {
+                var e = document.createElement(tag);
+                for (var k in attrs) e.setAttribute(k, attrs[k]);
+                (parent || el).appendChild(e);
+                return e;
+            }
+            function rand(a, b) { return a + Math.random() * (b - a); }
+
+            // Variasi global: skala & arah hadap acak
+            var s = rand(0.9, 1.12);
+            el.object3D.scale.set(s, s, s);
+            el.object3D.rotation.y = rand(0, Math.PI * 2);
+
+            // Bayangan kontak
+            add('a-circle', {
+                radius: 0.55, rotation: '-90 0 0', position: '0 0.012 0',
+                material: 'shader: flat; color: #000; opacity: 0.26; transparent: true'
+            });
+
+            // ---- Pot (gaya berbeda per jenis) + tanah ----
+            var POT = {
+                ficus:       { body: '#a05a38', h: 0.5,  r: 0.3 },   // terakota
+                palm:        { body: '#c9b892', h: 0.55, r: 0.33 },  // anyaman krem
+                sansevieria: { body: '#3c3a36', h: 0.42, r: 0.26 },  // keramik arang
+                dracaena:    { body: '#d9d2c2', h: 0.5,  r: 0.28 },  // glasir gading
+                monstera:    { body: '#8a5a3a', h: 0.48, r: 0.32 }   // tanah liat tua
+            };
+            var p = POT[type] || POT.ficus;
+            add('a-cone', {
+                'radius-bottom': p.r * 0.72, 'radius-top': p.r, height: p.h,
+                position: '0 ' + (p.h / 2 + 0.01) + ' 0',
+                color: p.body, material: 'roughness: 0.75'
+            });
+            add('a-cylinder', {
+                radius: p.r + 0.02, height: 0.05,
+                position: '0 ' + (p.h - 0.02) + ' 0',
+                color: p.body, material: 'roughness: 0.6'
+            });
+            add('a-cylinder', {
+                radius: p.r - 0.035, height: 0.025,
+                position: '0 ' + p.h + ' 0',
+                color: '#2b2014', material: 'roughness: 1'
+            });
+
+            var top = p.h; // permukaan tanah
+
+            // Material daun: tekstur transparan, dua sisi.
+            // alphaTest membuang piksel transparan sehingga hanya
+            // siluet daunnya yang tampak.
+            function leafMat(id) {
+                return 'src: #' + id + '; transparent: true; alphaTest: 0.5; side: double; roughness: 0.9; metalness: 0';
+            }
+
+            if (type === 'palm') {
+                // Palem: batang + mahkota pelepah yang menjulang ke atas
+                // lalu melengkung, tidak terkulai sampai ke pot
+                add('a-cylinder', {
+                    radius: 0.05, height: 0.55, position: '0 ' + (top + 0.27) + ' 0',
+                    color: '#6b5638', material: 'roughness: 0.95'
+                });
+                // Bonggol penutup sambungan pelepah
+                add('a-sphere', {
+                    radius: 0.075, position: '0 ' + (top + 0.56) + ' 0',
+                    color: '#5d4a30', material: 'roughness: 0.95'
+                });
+                var fronds = 12;
+                for (i = 0; i < fronds; i++) {
+                    var fw = add('a-entity', {
+                        position: '0 ' + (top + 0.57) + ' 0',
+                        rotation: '0 ' + (i * (360 / fronds) + rand(-10, 10)) + ' 0'
+                    });
+                    // Sebagian menjulang (droop negatif), sebagian merunduk ringan
+                    var droop = rand(-8, 38);
+                    var L = rand(0.7, 0.95);
+                    add('a-plane', {
+                        width: 0.5, height: L,
+                        position: '0 ' + (-Math.sin(droop * DEG) * L / 2) + ' ' + (Math.cos(droop * DEG) * L / 2),
+                        rotation: (90 + droop) + ' 0 ' + rand(-6, 6),
+                        material: leafMat('leaf-palm')
+                    }, fw);
+                }
+
+            } else if (type === 'sansevieria') {
+                // Lidah mertua: daun pedang tegak dengan variegasi
+                var n = 14;
+                for (i = 0; i < n; i++) {
+                    var la = rand(0, 360);
+                    var off = rand(0, 0.12);
+                    var lh = rand(0.5, 0.95);
+                    var lw = add('a-entity', {
+                        position: (Math.cos(la * DEG) * off) + ' ' + top + ' ' + (Math.sin(la * DEG) * off),
+                        rotation: rand(-10, 10) + ' ' + la + ' ' + rand(-10, 10)
+                    });
+                    add('a-plane', {
+                        width: rand(0.1, 0.15), height: lh,
+                        position: '0 ' + (lh / 2) + ' 0',
+                        material: leafMat('leaf-sansevieria')
+                    }, lw);
+                }
+
+            } else if (type === 'dracaena') {
+                // Dracaena: rumpun 3 batang berbeda tinggi, masing-masing
+                // dengan roset daun pita yang lebat — tidak lagi tampak
+                // seperti tongkat gundul
+                var stems = [
+                    { h: 0.9, x: 0.03, z: -0.02 },
+                    { h: 0.6, x: -0.09, z: 0.06 },
+                    { h: 0.35, x: 0.1, z: 0.06 }
+                ];
+                for (var si = 0; si < stems.length; si++) {
+                    var st = stems[si];
+                    add('a-cylinder', {
+                        radius: 0.045, height: st.h,
+                        position: st.x + ' ' + (top + st.h / 2) + ' ' + st.z,
+                        rotation: '0 0 ' + rand(-4, 4),
+                        color: '#6e5a3e', material: 'roughness: 0.95'
+                    });
+                    var strap = 18;
+                    for (i = 0; i < strap; i++) {
+                        var sw = add('a-entity', {
+                            position: st.x + ' ' + (top + st.h) + ' ' + st.z,
+                            rotation: '0 ' + (i * (360 / strap) + rand(-10, 10)) + ' 0'
+                        });
+                        // Sebagian daun menjulang, sebagian melengkung turun
+                        var sd = rand(-32, 42);
+                        var sL = rand(0.38, 0.58);
+                        add('a-plane', {
+                            width: 0.13, height: sL,
+                            position: '0 ' + (-Math.sin(sd * DEG) * sL / 2) + ' ' + (Math.cos(sd * DEG) * sL / 2),
+                            rotation: (90 + sd) + ' 0 0',
+                            material: leafMat('leaf-dracaena')
+                        }, sw);
+                    }
+                }
+
+            } else if (type === 'monstera') {
+                // Monstera: tangkai condong keluar + daun lebar berbelah
+                var big = 7;
+                for (i = 0; i < big; i++) {
+                    var mw = add('a-entity', {
+                        position: '0 ' + top + ' 0',
+                        rotation: '0 ' + (i * (360 / big) + rand(-15, 15)) + ' 0'
+                    });
+                    var tilt = rand(20, 50);
+                    var stalk = rand(0.5, 0.85);
+                    add('a-cylinder', {
+                        radius: 0.014, height: stalk,
+                        position: '0 ' + (Math.cos(tilt * DEG) * stalk / 2) + ' ' + (Math.sin(tilt * DEG) * stalk / 2),
+                        rotation: tilt + ' 0 0',
+                        color: '#3a5a2c', material: 'roughness: 0.9'
+                    }, mw);
+                    // Daun menghadap agak ke atas, ujung mengarah keluar
+                    add('a-plane', {
+                        width: rand(0.4, 0.5), height: rand(0.45, 0.55),
+                        position: '0 ' + (Math.cos(tilt * DEG) * stalk) + ' ' + (Math.sin(tilt * DEG) * stalk + 0.15),
+                        rotation: rand(55, 80) + ' ' + rand(-10, 10) + ' 0',
+                        material: leafMat('leaf-monstera')
+                    }, mw);
+                }
+
+            } else {
+                // Ficus (default): batang bercabang + tajuk dari gugus
+                // daun bersilang (teknik cross-quad seperti pada game)
+                add('a-cylinder', {
+                    radius: 0.045, height: 0.85,
+                    position: '0.02 ' + (top + 0.42) + ' 0',
+                    rotation: '0 0 ' + rand(-4, 4),
+                    color: '#57432a', material: 'roughness: 0.95'
+                });
+                add('a-cylinder', {
+                    radius: 0.02, height: 0.35,
+                    position: '0.16 ' + (top + 0.8) + ' 0.05',
+                    rotation: '0 0 -38', color: '#57432a'
+                });
+                add('a-cylinder', {
+                    radius: 0.02, height: 0.3,
+                    position: '-0.14 ' + (top + 0.85) + ' -0.04',
+                    rotation: '10 0 32', color: '#57432a'
+                });
+                for (i = 0; i < 5; i++) {
+                    var ca = rand(0, Math.PI * 2);
+                    var cr = rand(0, 0.24);
+                    var cluster = add('a-entity', {
+                        position: (Math.cos(ca) * cr) + ' ' + (top + rand(1.0, 1.5)) + ' ' + (Math.sin(ca) * cr),
+                        rotation: rand(-12, 12) + ' ' + rand(0, 180) + ' ' + rand(-12, 12)
+                    });
+                    var cs = rand(0.55, 0.8);
+                    add('a-plane', { width: cs, height: cs, rotation: '0 0 0', material: leafMat('leaf-ficus') }, cluster);
+                    add('a-plane', { width: cs, height: cs, rotation: '0 90 0', material: leafMat('leaf-ficus') }, cluster);
+                    add('a-plane', { width: cs, height: cs, rotation: '90 0 0', material: leafMat('leaf-ficus') }, cluster);
+                }
+            }
+        }
+    });
+
+    // ==========================================================
+    // 4b) KOMPONEN "standing-ac" — AC berdiri (floor standing)
+    //     dengan louver hembusan yang bergerak pelan, display
+    //     suhu menyala, LED daya, dan kisi hisap bawah.
+    // ==========================================================
+    AFRAME.registerComponent('standing-ac', {
+        init: function () {
+            var el = this.el;
+            function add(tag, attrs, parent) {
+                var e = document.createElement(tag);
+                for (var k in attrs) e.setAttribute(k, attrs[k]);
+                (parent || el).appendChild(e);
+                return e;
+            }
+
+            // Bayangan kontak
+            add('a-circle', {
+                radius: 0.55, rotation: '-90 0 0', position: '0 0.012 0',
+                material: 'shader: flat; color: #000; opacity: 0.25; transparent: true'
+            });
+            // Alas (plinth)
+            add('a-box', {
+                width: 0.66, height: 0.1, depth: 0.5, position: '0 0.05 0',
+                color: '#cfcabc', material: 'roughness: 0.6'
+            });
+            // Bodi utama menara
+            add('a-box', {
+                width: 0.6, height: 1.9, depth: 0.42, position: '0 1.05 0',
+                color: '#f1efe8', material: 'roughness: 0.35; metalness: 0.05'
+            });
+            // Aksen garis vertikal di sisi panel depan
+            add('a-box', {
+                width: 0.02, height: 1.55, depth: 0.012,
+                position: '-0.25 1.05 0.212', color: '#b8b2a4'
+            });
+
+            // Kisi hembusan atas (rongga gelap)
+            add('a-box', {
+                width: 0.5, height: 0.4, depth: 0.03,
+                position: '0 1.68 0.2', color: '#17140f',
+                material: 'roughness: 0.8'
+            });
+            // Louver yang berayun pelan (seolah mengarahkan angin)
+            var louvers = add('a-entity', {
+                position: '0 1.68 0.22',
+                animation: 'property: rotation; from: -14 0 0; to: 10 0 0; dir: alternate; loop: true; dur: 3400; easing: easeInOutSine'
+            });
+            [-0.12, 0, 0.12].forEach(function (y) {
+                add('a-box', {
+                    width: 0.48, height: 0.025, depth: 0.05,
+                    position: '0 ' + y + ' 0', rotation: '20 0 0',
+                    color: '#e6e2d6', material: 'roughness: 0.5'
+                }, louvers);
+            });
+
+            // Panel display suhu (menyala)
+            add('a-plane', {
+                width: 0.2, height: 0.09, position: '0 1.32 0.215',
+                material: 'shader: flat; color: #062028'
+            });
+            add('a-text', {
+                value: '22°C', position: '0 1.32 0.222', align: 'center',
+                color: '#7fd4ff', width: 0.7
+            });
+            // LED daya
+            add('a-circle', {
+                radius: 0.012, position: '0.15 1.32 0.218',
+                material: 'shader: flat; color: #4cff88'
+            });
+
+            // Merek kecil
+            add('a-text', {
+                value: 'COOLAIRE', position: '0 0.78 0.215', align: 'center',
+                color: '#8a8478', width: 1.1
+            });
+
+            // Kisi hisap bawah (garis-garis horizontal)
+            for (var i = 0; i < 5; i++) {
+                add('a-box', {
+                    width: 0.46, height: 0.015, depth: 0.012,
+                    position: '0 ' + (0.32 + i * 0.07) + ' 0.212',
+                    color: '#c9c4b6'
+                });
+            }
+        }
+    });
+
+    // ==========================================================
+    // 5) KOMPONEN "player-collider" — deteksi tabrakan dinding
+    // ==========================================================
+    AFRAME.registerComponent('player-collider', {
+        init: function () {
+            this.walls = [];
+            this.tempVec = new THREE.Vector3();
+            this.prevPos = new THREE.Vector3();
+
+            this.el.sceneEl.addEventListener('loaded', function () {
+                var wallEls = document.querySelectorAll('.wall');
+                var walls = this.walls;
+                wallEls.forEach(function (el) {
+                    var obj3d = el.object3D;
+                    obj3d.updateMatrixWorld(true);
+                    var bbox = new THREE.Box3().setFromObject(obj3d);
+                    bbox.expandByScalar(0.35);
+                    walls.push(bbox);
+                });
+            }.bind(this));
+
+            this.prevPos.copy(this.el.object3D.position);
+        },
+
+        tick: function () {
+            var pos = this.el.object3D.position;
+
+            // Batas ruangan (pengaman) — dihitung dinamis sesuai
+            // panjang galeri yang dibangun dari jumlah karya di database.
+            var b = window.GALLERY_BOUNDS || { xMin: -14.2, xMax: 14.2, zMin: -14.2, zMax: 14.2 };
+            if (pos.x > b.xMax) pos.x = b.xMax;
+            if (pos.x < b.xMin) pos.x = b.xMin;
+            if (pos.z > b.zMax) pos.z = b.zMax;
+            if (pos.z < b.zMin) pos.z = b.zMin;
+            pos.y = 0;
+
+            this.tempVec.set(pos.x, 1.6, pos.z);
+            for (var i = 0; i < this.walls.length; i++) {
+                if (this.walls[i].containsPoint(this.tempVec)) {
+                    pos.x = this.prevPos.x;
+                    pos.z = this.prevPos.z;
+                    break;
+                }
+            }
+            this.prevPos.copy(pos);
+        }
+    });
+
+    // ==========================================================
+    // 6) NAVIGASI MOBILE — state joystick global + komponen
+    //    "touch-controls" yang menggerakkan rig relatif terhadap
+    //    arah pandang kamera. Kolisi tetap ditangani
+    //    player-collider karena ia membaca posisi rig tiap tick.
+    // ==========================================================
+    var JOY = { active: false, x: 0, y: 0 };
+
+    AFRAME.registerComponent('touch-controls', {
+        schema: {
+            enabled: { default: false },
+            speed:   { default: 2.6 }   // m/detik, kecepatan jalan santai
+        },
+
+        init: function () {
+            this.fwd = new THREE.Vector3();
+            this.right = new THREE.Vector3();
+            this.quat = new THREE.Quaternion();
+        },
+
+        tick: function (t, dt) {
+            if (!this.data.enabled || !JOY.active || !dt) return;
+            var camEl = document.getElementById('camera');
+            if (!camEl) return;
+
+            camEl.object3D.getWorldQuaternion(this.quat);
+            this.fwd.set(0, 0, -1).applyQuaternion(this.quat);
+            this.fwd.y = 0;
+            this.fwd.normalize();
+            this.right.set(1, 0, 0).applyQuaternion(this.quat);
+            this.right.y = 0;
+            this.right.normalize();
+
+            var k = this.data.speed * dt / 1000;
+            var pos = this.el.object3D.position;
+            pos.addScaledVector(this.fwd, -JOY.y * k);   // dorong ke atas = maju
+            pos.addScaledVector(this.right, JOY.x * k);
+        }
+    });
+
+    // ==========================================================
+    // 6b) KOMPONEN "compass-track" — memutar jarum kompas HUD
+    //     mengikuti arah pandang kamera. Rotasi Y kamera 0 = menghadap
+    //     -Z (arah "utara" bawaan galeri, lihat GALLERY_ENTRANCE_Z).
+    // ==========================================================
+    AFRAME.registerComponent('compass-track', {
+        init: function () {
+            this.needle = document.getElementById('compass-needle');
+        },
+
+        tick: function () {
+            if (!this.needle) return;
+            var deg = -this.el.object3D.rotation.y * 180 / Math.PI;
+            this.needle.style.transform = 'rotate(' + deg + 'deg)';
+        }
+    });
+
+    // ==========================================================
+    // 7) PEMBANGUN GALERI DINAMIS
+    //    Museum tersusun dari beberapa RUANGAN persegi yang berbaris
+    //    ke utara, tersambung lewat pintu di dinding bersama. Tiap
+    //    dinding (utara/selatan/timur/barat) menampilkan 2 karya, jadi
+    //    kapasitas satu ruangan = 8 karya. Jumlah ruangan mengikuti
+    //    ceil(jumlah_karya / 8) — makin banyak karya, makin banyak
+    //    ruangan yang terbentuk, bukan satu lorong yang terus memanjang.
+    // ==========================================================
+    var GALLERY_ROOM_SIZE = 22;      // ruangan persegi 22x22 — dinding cukup lega untuk 2 karya
+    var GALLERY_CEIL_H = 6;
+    var GALLERY_ENTRANCE_Z = 12;     // dinding pintu masuk (selatan), sekaligus batas selatan ruangan pertama
+    // Jarak 2 karya dari titik tengah dinding. Dihitung supaya jarak
+    // celah-ke-sudut sama dengan jarak antar-dua-karya di tengah
+    // (margin == gap) — kalau tidak, dinding lebar terasa "kosong di
+    // tengah" karena celah tengah jauh lebih besar dari sisa dinding.
+    var GALLERY_WALL_OFFSET = (GALLERY_ROOM_SIZE / 2 + 1.6) / 3;
+    var GALLERY_DOORWAY_HALF = 2.5;  // separuh lebar bukaan pintu antar ruangan
+    var GALLERY_TARGET_LONG = 2.8;   // panjang sisi terpanjang bingkai lukisan
+    var GALLERY_MIN_SIDE = 1.6;
+    var GALLERY_MAX_SIDE = 3.2;
+
+    var EXHIBIT_FRAMES = ['#2e2013', '#9a7b2d', '#241a10', '#6b4c2a'];
+
+    function karyaImgId(id) { return 'karya-img-' + id; }
+
+    // Menghitung ukuran bingkai dari rasio aspek gambar asli (bukan
+    // ukuran acak) supaya lukisan tidak gepeng/melar dan proporsional
+    // satu sama lain — sisi terpanjang dipatok ke GALLERY_TARGET_LONG.
+    function computeExhibitDims(aspect) {
+        var ar = aspect > 0 ? aspect : 1;
+        var w, h;
+        if (ar >= 1) {
+            w = GALLERY_TARGET_LONG;
+            h = GALLERY_TARGET_LONG / ar;
+        } else {
+            h = GALLERY_TARGET_LONG;
+            w = GALLERY_TARGET_LONG * ar;
+        }
+        w = Math.min(GALLERY_MAX_SIDE, Math.max(GALLERY_MIN_SIDE, w));
+        h = Math.min(GALLERY_MAX_SIDE, Math.max(GALLERY_MIN_SIDE, h));
+        return { w: Math.round(w * 100) / 100, h: Math.round(h * 100) / 100 };
+    }
+
+    // Mengukur rasio aspek (lebar/tinggi) gambar lewat browser sebelum
+    // tata letak dihitung, supaya bingkai lukisan mengikuti bentuk
+    // gambar aslinya. Gagal load -> anggap persegi (aspect 1).
+    function probeImageAspect(src) {
+        return new Promise(function (resolve) {
+            var img = new Image();
+            img.onload = function () {
+                resolve(img.naturalHeight ? (img.naturalWidth / img.naturalHeight) : 1);
+            };
+            img.onerror = function () { resolve(1); };
+            img.src = src;
+        });
+    }
+
+    function karyaImageSrc(k) {
+        return k.gambar ? ('uploads/karya/' + k.gambar) : 'art/art1.jpg';
+    }
+
+    function buildAssetsHTML(karyaList) {
+        var html = '<img id="art-fallback" src="art/art1.jpg">';
+        karyaList.forEach(function (k) {
+            html += '<img id="' + karyaImgId(k.id) + '" src="' + karyaImageSrc(k) + '">';
+        });
+        html += '<audio id="ambient-music" src="audio/ambient.mp3" preload="auto" loop></audio>';
+        return html;
+    }
+
+    // Skylight kaca di plafon: bukaan persegi dengan bingkai dan palang
+    // (mullion) yang membagi kacanya jadi grid 3x3 — dipasang di tengah
+    // tiap ruangan, bukan cuma satu di area lobi seperti sebelumnya.
+    function buildSkylightHTML(ch, cz, size) {
+        var half = size / 2;
+        var yGlass = ch - 0.03;
+        var yFrame = ch - 0.1;
+        var yMullion = ch - 0.07;
+        var html = '';
+
+        html += '<a-plane position="0 ' + yGlass + ' ' + cz + '" rotation="90 0 0" width="' + size + '" height="' + size + '" ' +
+            'material="shader: flat; color: #eef4fb"></a-plane>';
+
+        // Bingkai keliling
+        html += '<a-box position="0 ' + yFrame + ' ' + (cz - half - 0.08) + '" width="' + (size + 0.6) + '" height="0.16" depth="0.25" color="#c9c1ad"></a-box>';
+        html += '<a-box position="0 ' + yFrame + ' ' + (cz + half + 0.08) + '" width="' + (size + 0.6) + '" height="0.16" depth="0.25" color="#c9c1ad"></a-box>';
+        html += '<a-box position="' + (-half - 0.08) + ' ' + yFrame + ' ' + cz + '" width="0.25" height="0.16" depth="' + (size + 0.6) + '" color="#c9c1ad"></a-box>';
+        html += '<a-box position="' + (half + 0.08) + ' ' + yFrame + ' ' + cz + '" width="0.25" height="0.16" depth="' + (size + 0.6) + '" color="#c9c1ad"></a-box>';
+
+        // Palang kaca (mullion) membagi jadi grid 3x3
+        var step = size / 3;
+        for (var i = 1; i < 3; i++) {
+            var mx = -half + step * i;
+            var mz = cz - half + step * i;
+            html += '<a-box position="' + mx + ' ' + yMullion + ' ' + cz + '" width="0.06" height="0.06" depth="' + size + '" color="#8f887a"></a-box>';
+            html += '<a-box position="0 ' + yMullion + ' ' + mz + '" width="' + size + '" height="0.07" depth="0.07" color="#8f887a"></a-box>';
+        }
+
+        return html;
+    }
+
+    function buildBenchHTML(x, z) {
+        return '<a-entity position="' + x + ' 0 ' + z + '">' +
+            '<a-circle radius="1.5" rotation="-90 0 0" position="0 0.012 0" material="shader: flat; color: #000; opacity: 0.18; transparent: true"></a-circle>' +
+            '<a-box position="0 0.44 0" width="2.4" height="0.1" depth="0.8" color="#4a3423" material="roughness: 0.45"></a-box>' +
+            '<a-box position="0 0.53 0" width="2.3" height="0.09" depth="0.73" color="#3a2b20" material="roughness: 0.85"></a-box>' +
+            '<a-box position="-1.05 0.2 0.28" width="0.08" height="0.4" depth="0.08" color="#241a10"></a-box>' +
+            '<a-box position="1.05 0.2 0.28" width="0.08" height="0.4" depth="0.08" color="#241a10"></a-box>' +
+            '<a-box position="-1.05 0.2 -0.28" width="0.08" height="0.4" depth="0.08" color="#241a10"></a-box>' +
+            '<a-box position="1.05 0.2 -0.28" width="0.08" height="0.4" depth="0.08" color="#241a10"></a-box>' +
+        '</a-entity>';
+    }
+
+    // Menghitung rotasi Y (derajat) agar AC berdiri di sudut ruangan
+    // menghadap diagonal ke tengah ruangan, menjauhi kedua dinding
+    // sudut yang mengapitnya — dihitung dari posisi sudutnya sendiri,
+    // bukan angka tetap, supaya benar untuk sudut manapun.
+    // signX: -1 = sudut dekat dinding barat, +1 = dekat dinding timur.
+    // signZ: +1 = sudut dekat dinding selatan (pintu masuk),
+    //        -1 = sudut dekat dinding utara (ujung galeri).
+    function cornerFacingRotationY(signX, signZ) {
+        return Math.round(Math.atan2(-signX, -signZ) * 180 / Math.PI);
+    }
+
+    function buildTeleportHTML(x, z, label) {
+        return '<a-cylinder class="teleport-point clickable" position="' + x + ' 0.03 ' + z + '" radius="0.55" height="0.02" ' +
+            'color="#a8823f" opacity="0.45" material="metalness: 0.6; roughness: 0.3; transparent: true" ' +
+            'data-teleport-x="' + x + '" data-teleport-z="' + z + '" ' +
+            'animation="property: material.opacity; to: 0.8; dir: alternate; loop: true; dur: 1600">' +
+            '<a-text value="' + label + '" position="0 0.05 0" rotation="-90 0 0" align="center" color="#2b2115" width="2.6"></a-text>' +
+        '</a-cylinder>';
+    }
+
+    // Membangun seluruh isi <a-scene> (aset, arsitektur, lukisan,
+    // rig kamera) berdasarkan daftar karya dari database, lalu
+    // mengisi ART_DATA dan window.GALLERY_BOUNDS untuk dipakai
+    // komponen "exhibit" dan "player-collider".
+    function buildGalleryHTML(karyaList) {
+        var n = karyaList.length;
+        var rs = GALLERY_ROOM_SIZE;
+        var rhw = rs / 2;
+        var ch = GALLERY_CEIL_H;
+        var off = GALLERY_WALL_OFFSET;
+        var dh = GALLERY_DOORWAY_HALF;
+        // Dinding yang punya bukaan pintu butuh jarak karya yang lebih
+        // besar dari GALLERY_WALL_OFFSET biasa — kalau tidak, karya akan
+        // mepet ke tepi pintu. Dihitung supaya jarak pintu-ke-karya sama
+        // dengan jarak karya-ke-sudut (tetap balance seperti dinding polos).
+        var doorGapBuffer = Math.max(0.6, (rhw - dh - 3.2) / 2);
+        var doorOff = dh + doorGapBuffer + 1.6;
+        var rigStartZ = GALLERY_ENTRANCE_Z - 2;
+
+        var numRooms = Math.max(1, Math.ceil(n / 8));
+
+        // Batas selatan tiap ruangan: zTop[i] = dinding sebelum ruangan i,
+        // zTop[numRooms] = dinding akhir (ujung galeri).
+        var zTop = [];
+        for (var i = 0; i <= numRooms; i++) zTop.push(GALLERY_ENTRANCE_Z - i * rs);
+
+        window.GALLERY_BOUNDS = {
+            xMin: -rhw + 0.8, xMax: rhw - 0.8,
+            zMin: zTop[numRooms] + 0.8, zMax: GALLERY_ENTRANCE_Z - 0.8
+        };
+        window.GALLERY_ROOM_SIZE = rs;
+        window.GALLERY_KARYA_COUNT = n;
+
+        var html = '';
+        html += '<a-assets timeout="15000">' + buildAssetsHTML(karyaList) + '</a-assets>';
+        html += '<a-entity light="type: hemisphere; color: #fff4e2; groundColor: #6e5b3f; intensity: 0.55"></a-entity>';
+        html += '<a-entity light="type: directional; color: #fff6e4; intensity: 0.5; castShadow: true; ' +
+            'shadowCameraLeft: -16; shadowCameraRight: 16; shadowCameraTop: 16; shadowCameraBottom: -16" ' +
+            'position="3 10 4"></a-entity>';
+        html += '<a-entity light="type: ambient; color: #efe6d4; intensity: 0.28"></a-entity>';
+
+        var frameCounter = 0;
+        function placeOnWall(item, x, z, rotY) {
+            if (!item) return '';
+            var dim = computeExhibitDims(item._aspect);
+            var frame = EXHIBIT_FRAMES[frameCounter % EXHIBIT_FRAMES.length];
+            frameCounter++;
+            var key = 'karya-' + item.id;
+
+            ART_DATA[key] = {
+                title: item.judul,
+                artist: item.seniman + (item.tahun ? ' • ' + item.tahun : ''),
+                desc: item.deskripsi || '',
+                img: karyaImageSrc(item)
+            };
+
+            return '<a-entity position="' + x + ' 2.3 ' + z + '" rotation="0 ' + rotY + ' 0" ' +
+                'exhibit="key: ' + key + '; src: #' + karyaImgId(item.id) + '; w: ' + dim.w + '; h: ' + dim.h + '; frame: ' + frame + '"></a-entity>';
+        }
+
+        // Dinding melintang (menghadap utara/selatan) selebar penuh
+        // ruangan di posisi z, dengan bukaan pintu di tengah jika
+        // tersambung ke ruangan lain.
+        function crossWallHTML(z, hasDoorway) {
+            if (!hasDoorway) {
+                return '<a-box class="wall" position="0 ' + (ch / 2) + ' ' + z + '" width="' + rs + '" height="' + ch + '" depth="0.3" ' +
+                    'material="src: #wall-canvas; repeat: 5 2; roughness: 0.85" shadow="receive: true"></a-box>';
+            }
+            var segW = rhw - dh;
+            return '<a-box class="wall" position="' + (-(dh + segW / 2)) + ' ' + (ch / 2) + ' ' + z + '" width="' + segW + '" height="' + ch + '" depth="0.3" ' +
+                'material="src: #wall-canvas; repeat: 2 2; roughness: 0.85" shadow="receive: true"></a-box>' +
+                '<a-box class="wall" position="' + (dh + segW / 2) + ' ' + (ch / 2) + ' ' + z + '" width="' + segW + '" height="' + ch + '" depth="0.3" ' +
+                'material="src: #wall-canvas; repeat: 2 2; roughness: 0.85" shadow="receive: true"></a-box>';
+        }
+
+        var idx = 0;
+        function nextKarya() { return idx < n ? karyaList[idx++] : null; }
+
+        // Daftar titik teleportasi untuk carousel HUD (lihat window.GALLERY_TELEPORTS
+        // di bawah) — thumbnail tiap ruangan memakai karya pertama yang
+        // dipajang di ruangan itu, supaya carousel memberi gambaran isinya.
+        var roomTeleports = [{ x: 0, z: rigStartZ, label: 'Pintu Masuk', thumb: null }];
+
+        var teleportsHTML = '';
+
+        for (var r = 0; r < numRooms; r++) {
+            var zSouth = zTop[r], zNorth = zTop[r + 1], centerZ = (zSouth + zNorth) / 2;
+            var hasNext = r < numRooms - 1;
+            var roomThumb = idx < n ? karyaImageSrc(karyaList[idx]) : null;
+
+            // Lantai & plafon ruangan
+            html += '<a-plane position="0 0 ' + centerZ + '" rotation="-90 0 0" width="' + rs + '" height="' + rs + '" ' +
+                'material="src: #floor-canvas; repeat: ' + Math.max(2, Math.round(rs / 4.5)) + ' ' + Math.max(2, Math.round(rs / 4.5)) + '; roughness: 0.4; metalness: 0.05" shadow="receive: true"></a-plane>';
+            html += '<a-plane position="0 ' + ch + ' ' + centerZ + '" rotation="90 0 0" width="' + rs + '" height="' + rs + '" ' +
+                'material="src: #ceil-canvas; repeat: ' + Math.max(2, Math.round(rs / 2)) + ' ' + Math.max(2, Math.round(rs / 2)) + '; roughness: 0.95"></a-plane>';
+
+            // Skylight di tengah plafon ruangan
+            html += buildSkylightHTML(ch, centerZ, Math.min(10, rs * 0.45));
+
+            // Dinding timur & barat — masing-masing 2 karya, khusus ruangan ini
+            html += '<a-box class="wall" position="' + rhw + ' ' + (ch / 2) + ' ' + centerZ + '" width="0.3" height="' + ch + '" depth="' + rs + '" ' +
+                'material="src: #wall-canvas; repeat: 4 2; roughness: 0.85" shadow="receive: true"></a-box>';
+            html += '<a-box class="wall" position="' + (-rhw) + ' ' + (ch / 2) + ' ' + centerZ + '" width="0.3" height="' + ch + '" depth="' + rs + '" ' +
+                'material="src: #wall-canvas; repeat: 4 2; roughness: 0.85" shadow="receive: true"></a-box>';
+            html += placeOnWall(nextKarya(), rhw - 0.24, centerZ - off, -90);
+            html += placeOnWall(nextKarya(), rhw - 0.24, centerZ + off, -90);
+            html += placeOnWall(nextKarya(), -(rhw - 0.24), centerZ - off, 90);
+            html += placeOnWall(nextKarya(), -(rhw - 0.24), centerZ + off, 90);
+
+            // Dinding selatan: hanya ruangan pertama yang membangunnya —
+            // ini dinding pintu masuk museum, jadi solid tanpa bukaan
+            // (pengunjung memulai langsung di dalam ruangan). Ruangan
+            // berikutnya berbagi dinding ini dengan dinding utara
+            // ruangan sebelumnya.
+            if (r === 0) {
+                html += crossWallHTML(zSouth, false);
+                html += placeOnWall(nextKarya(), -off, zSouth - 0.24, 180);
+                html += placeOnWall(nextKarya(), off, zSouth - 0.24, 180);
+            }
+
+            // Dinding utara: dibangun oleh ruangan ini, dua sisi jika
+            // tersambung ke ruangan berikutnya (karya menghadap masing-
+            // masing ruangan), atau satu sisi saja jika ini ruangan akhir.
+            // Dinding dengan bukaan pintu memakai doorOff (bukan off)
+            // supaya karya tidak mepet ke tepi pintu.
+            html += crossWallHTML(zNorth, hasNext);
+            var northOff = hasNext ? doorOff : off;
+            html += placeOnWall(nextKarya(), -northOff, zNorth + 0.24, 0);
+            html += placeOnWall(nextKarya(), northOff, zNorth + 0.24, 0);
+            if (hasNext) {
+                html += placeOnWall(nextKarya(), -doorOff, zNorth - 0.24, 180);
+                html += placeOnWall(nextKarya(), doorOff, zNorth - 0.24, 180);
+            }
+
+            // Baseboard & cornice keliling ruangan
+            html += '<a-box position="0 0.11 ' + (centerZ - rhw + 0.02) + '" width="' + rs + '" height="0.22" depth="0.14" color="#3a2c1c" material="roughness: 0.5"></a-box>';
+            html += '<a-box position="0 0.11 ' + (centerZ + rhw - 0.02) + '" width="' + rs + '" height="0.22" depth="0.14" color="#3a2c1c" material="roughness: 0.5"></a-box>';
+            html += '<a-box position="' + (-rhw + 0.02) + ' 0.11 ' + centerZ + '" width="0.14" height="0.22" depth="' + rs + '" color="#3a2c1c" material="roughness: 0.5"></a-box>';
+            html += '<a-box position="' + (rhw - 0.02) + ' 0.11 ' + centerZ + '" width="0.14" height="0.22" depth="' + rs + '" color="#3a2c1c" material="roughness: 0.5"></a-box>';
+
+            if (n === 0) {
+                html += '<a-text value="Belum ada karya untuk ditampilkan.\nSilakan tambahkan lewat halaman admin." ' +
+                    'position="0 2.4 ' + centerZ + '" rotation="0 180 0" ' +
+                    'align="center" color="#6b5a3d" width="6"></a-text>';
+            }
+
+            // Bangku di tengah ruangan
+            html += buildBenchHTML(0, centerZ);
+
+            teleportsHTML += buildTeleportHTML(0, centerZ, 'Ruang ' + (r + 1));
+            roomTeleports.push({ x: 0, z: centerZ, zSouth: zSouth, zNorth: zNorth, label: 'Ruang ' + (r + 1), thumb: roomThumb });
+        }
+
+        window.GALLERY_TELEPORTS = roomTeleports;
+
+        // AC di sudut pintu masuk & sudut ujung galeri, tanaman
+        // mendampingi sedikit lebih ke dalam ruangan.
+        var acInset = rhw - 0.9;
+        var acSouthZ = GALLERY_ENTRANCE_Z - 0.9;
+        var plantSouthZ = GALLERY_ENTRANCE_Z - 2.6;
+        var acEndZ = zTop[numRooms] + 0.9;
+        var plantEndZ = zTop[numRooms] + 2.6;
+
+        html += '<a-entity standing-ac class="wall" position="' + (-acInset) + ' 0 ' + acSouthZ + '" rotation="0 ' + cornerFacingRotationY(-1, 1) + ' 0"></a-entity>';
+        html += '<a-entity standing-ac class="wall" position="' + acInset + ' 0 ' + acSouthZ + '" rotation="0 ' + cornerFacingRotationY(1, 1) + ' 0"></a-entity>';
+        html += '<a-entity plant="type: palm" position="' + (-acInset) + ' 0 ' + plantSouthZ + '"></a-entity>';
+        html += '<a-entity plant="type: ficus" position="' + acInset + ' 0 ' + plantSouthZ + '"></a-entity>';
+
+        html += '<a-entity standing-ac class="wall" position="' + (-acInset) + ' 0 ' + acEndZ + '" rotation="0 ' + cornerFacingRotationY(-1, -1) + ' 0"></a-entity>';
+        html += '<a-entity standing-ac class="wall" position="' + acInset + ' 0 ' + acEndZ + '" rotation="0 ' + cornerFacingRotationY(1, -1) + ' 0"></a-entity>';
+        html += '<a-entity plant="type: dracaena" position="' + (-acInset) + ' 0 ' + plantEndZ + '"></a-entity>';
+        html += '<a-entity plant="type: sansevieria" position="' + acInset + ' 0 ' + plantEndZ + '"></a-entity>';
+
+        // Titik teleportasi: pintu masuk, tengah tiap ruangan
+        html += buildTeleportHTML(0, rigStartZ, 'Pintu Masuk');
+        html += teleportsHTML;
+
+        // Rig kamera & kursor
+        html += '<a-entity id="rig" position="0 0 ' + rigStartZ + '" player-collider touch-controls>' +
+            '<a-camera id="camera" position="0 1.6 0" look-controls="pointerLockEnabled: true; touchEnabled: true" wasd-controls="acceleration: 25; fly: false" compass-track>' +
+            '<a-cursor id="cursor" raycaster="objects: .clickable; far: 10" fuse="false" position="0 0 -1" ' +
+            'geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.018" material="color: #d8c48f; shader: flat; opacity: 0.85" ' +
+            'animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150" ' +
+            'animation__fusing="property: scale; startEvents: fusing; from: 1 1 1; to: 0.5 0.5 0.5; dur: 200"></a-cursor>' +
+            '</a-camera>' +
+            '</a-entity>';
+
+        // Musik ambient
+        html += '<a-entity sound="src: #ambient-music; autoplay: false; loop: true; volume: 0.25" id="music-entity"></a-entity>';
+
+        return html;
+    }
+    </script>
+
+    <!-- =============================================================
+         A-FRAME SCENE — Museum 9 Project
+         Panjang lorong galeri dihitung dinamis dari jumlah karya
+         di database (lihat buildGalleryHTML). Elemen <a-scene>
+         dibangun & disisipkan lewat JS setelah data karya selesai
+         diambil dari api/karya.php — lihat script di bawah.
+    ============================================================== -->
+    <div id="scene-mount"></div>
+
+    <script>
+        // ==========================================================
+        // BOOTSTRAP: ambil data karya dari database, bangun scene,
+        // baru jalankan logika UI (teleport, info panel, dst) yang
+        // butuh elemen-elemen di dalam <a-scene> sudah terpasang.
+        // ==========================================================
+        document.addEventListener('DOMContentLoaded', function () {
+            var enterBtn = document.getElementById('enter-btn');
+
+            // Catat kunjungan — dikirim sekali per pemuatan halaman,
+            // tidak menunggu responsnya (tidak boleh menunda tampilnya galeri).
+            fetch('api/track.php', { method: 'POST' }).catch(function () {});
+
+            fetch('api/karya.php')
+                .then(function (res) {
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    return res.json();
+                })
+                .then(function (karyaList) {
+                    // Rasio aspek diambil langsung dari lebar/tinggi yang
+                    // tersimpan di database (diisi otomatis saat upload) —
+                    // tidak perlu lagi memuat tiap gambar hanya untuk
+                    // mengukur rasionya. Fallback ke pengukuran langsung
+                    // hanya untuk baris lama yang belum punya data ini.
+                    var toProbe = [];
+                    karyaList.forEach(function (k) {
+                        if (k.lebar > 0 && k.tinggi > 0) {
+                            k._aspect = k.lebar / k.tinggi;
+                        } else {
+                            toProbe.push(k);
+                        }
+                    });
+                    if (toProbe.length === 0) return karyaList;
+                    return Promise.all(toProbe.map(function (k) {
+                        return probeImageAspect(karyaImageSrc(k)).then(function (ar) {
+                            k._aspect = ar;
+                        });
+                    })).then(function () { return karyaList; });
+                })
+                .then(function (karyaList) {
+                    var mount = document.getElementById('scene-mount');
+                    mount.innerHTML =
+                        '<a-scene background="color: #beb7a6" ' +
+                        'fog="type: linear; color: #b9b2a2; near: 10; far: 48" ' +
+                        'renderer="antialias: true; colorManagement: true; shadowMapEnabled: true; anisotropy: 8" ' +
+                        'shadow="type: pcfsoft">' + buildGalleryHTML(karyaList) + '</a-scene>';
+
+                    enterBtn.disabled = false;
+                    enterBtn.textContent = 'Masuki Museum';
+
+                    startExperience();
+                })
+                .catch(function (err) {
+                    console.error('Gagal memuat data karya dari server:', err);
+                    enterBtn.textContent = 'Gagal memuat data — muat ulang halaman';
+                });
+        });
+
+        // ==========================================================
+        // LOGIKA UI: intro, panel info, teleport, audio
+        // Dipanggil setelah <a-scene> berhasil dibangun dari data karya.
+        // ==========================================================
+        function startExperience() {
+            var introOverlay = document.getElementById('intro-overlay');
+            var enterBtn = document.getElementById('enter-btn');
+            var infoPanel = document.getElementById('art-info-panel');
+            var closePanel = document.getElementById('close-panel');
+            var artTitle = document.getElementById('art-title');
+            var artArtist = document.getElementById('art-artist');
+            var artDesc = document.getElementById('art-desc');
+            var artImg = document.getElementById('art-img');
+            var audioBtn = document.getElementById('audio-control');
+            var music = document.getElementById('ambient-music');
+            var musicOn = true;
+            var sceneEl = document.querySelector('a-scene');
+            var rig = document.getElementById('rig');
+            var isMobile = AFRAME.utils.device.isMobile();
+
+            // MASUK MUSEUM
+            function enterGallery() {
+                introOverlay.classList.add('hidden');
+
+                music.volume = 0.25;
+                music.play().catch(function (e) { console.log('Autoplay musik diblokir:', e); });
+
+                // Pointer lock hanya relevan di desktop
+                if (!isMobile) {
+                    setTimeout(function () {
+                        var canvas = document.querySelector('.a-canvas');
+                        if (canvas && canvas.requestPointerLock) canvas.requestPointerLock();
+                    }, 500);
+                }
+
+                setTimeout(function () {
+                    introOverlay.style.display = 'none';
+                }, 1000);
+            }
+
+            enterBtn.addEventListener('click', enterGallery);
+            introOverlay.addEventListener('click', function (e) {
+                if (e.target === introOverlay) enterGallery();
+            });
+
+            // TAMPILKAN INFO KARYA (dipanggil dari komponen exhibit)
+            window.showArtInfo = function (key) {
+                var info = ART_DATA[key];
+                if (!info) return;
+
+                artTitle.textContent = info.title;
+                artArtist.textContent = info.artist;
+                artDesc.textContent = info.desc;
+                artImg.src = info.img || '';
+                infoPanel.classList.add('visible');
+
+                if (document.pointerLockElement) document.exitPointerLock();
+            };
+
+            // TUTUP PANEL
+            closePanel.addEventListener('click', function () {
+                infoPanel.classList.remove('visible');
+                if (!isMobile) {
+                    var canvas = document.querySelector('.a-canvas');
+                    if (canvas && canvas.requestPointerLock) canvas.requestPointerLock();
+                }
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') infoPanel.classList.remove('visible');
+            });
+
+            // TELEPORTASI
+            function teleportTo(x, z) {
+                rig.setAttribute('animation__teleport',
+                    'property: position; to: ' + x + ' 0 ' + z + '; dur: 450; easing: easeInOutQuad');
+            }
+
+            var teleports = document.querySelectorAll('.teleport-point');
+            teleports.forEach(function (tp) {
+                tp.addEventListener('click', function () {
+                    teleportTo(parseFloat(this.getAttribute('data-teleport-x')), parseFloat(this.getAttribute('data-teleport-z')));
+                });
+
+                tp.addEventListener('mouseenter', function () {
+                    this.setAttribute('material', 'opacity', 1);
+                    this.setAttribute('scale', '1.15 1 1.15');
+                });
+                tp.addEventListener('mouseleave', function () {
+                    this.setAttribute('material', 'opacity', 0.45);
+                    this.setAttribute('scale', '1 1 1');
+                });
+            });
+
+            // CAROUSEL TELEPORTASI RUANGAN — thumbnail per ruangan di bawah
+            // tengah layar, sejajar dengan titik teleportasi cakram emas.
+            (function setupRoomCarousel() {
+                var rooms = window.GALLERY_TELEPORTS || [];
+                if (rooms.length === 0) return;
+
+                var carousel = document.getElementById('room-carousel');
+                var track = document.getElementById('carousel-track');
+                var cards = [];
+
+                rooms.forEach(function (room) {
+                    var card = document.createElement('div');
+                    card.className = 'carousel-card' + (room.thumb ? '' : ' no-thumb');
+                    card.dataset.z = room.z;
+
+                    if (room.thumb) {
+                        var img = document.createElement('img');
+                        img.src = room.thumb;
+                        img.alt = room.label;
+                        card.appendChild(img);
+                    }
+
+                    var label = document.createElement('span');
+                    label.className = 'carousel-label';
+                    label.textContent = room.label;
+                    card.appendChild(label);
+
+                    card.addEventListener('click', function () {
+                        teleportTo(room.x, room.z);
+                    });
+
+                    track.appendChild(card);
+                    cards.push({ el: card, z: room.z });
+                });
+
+                carousel.classList.add('ready');
+
+                function cardStep() {
+                    var first = track.querySelector('.carousel-card');
+                    if (!first) return 84;
+                    var style = getComputedStyle(track);
+                    return first.getBoundingClientRect().width + parseFloat(style.gap || 8);
+                }
+
+                document.getElementById('carousel-prev').addEventListener('click', function () {
+                    track.scrollBy({ left: -cardStep(), behavior: 'smooth' });
+                });
+                document.getElementById('carousel-next').addEventListener('click', function () {
+                    track.scrollBy({ left: cardStep(), behavior: 'smooth' });
+                });
+
+                // Tandai kartu ruangan terdekat dengan posisi rig saat ini.
+                var lastActive = null;
+                setInterval(function () {
+                    var z = rig.object3D.position.z;
+                    var nearest = cards[0];
+                    cards.forEach(function (c) {
+                        if (Math.abs(c.z - z) < Math.abs(nearest.z - z)) nearest = c;
+                    });
+                    if (nearest !== lastActive) {
+                        if (lastActive) lastActive.el.classList.remove('active');
+                        nearest.el.classList.add('active');
+                        lastActive = nearest;
+                    }
+                }, 400);
+            })();
+
+            // AUDIO
+            audioBtn.addEventListener('click', function () {
+                if (musicOn) {
+                    music.pause();
+                    audioBtn.innerHTML = '&#128263; Musik: OFF';
+                } else {
+                    music.play();
+                    audioBtn.innerHTML = '&#128266; Musik: ON';
+                }
+                musicOn = !musicOn;
+            });
+
+            // ==================================================
+            // TOMBOL HUD: pengaturan, layar penuh, tentang, peta
+            // ==================================================
+            (function setupHudExtras() {
+                var ICONS = {
+                    gear: '<svg viewBox="0 0 24 24" fill="currentColor">' +
+                        '<rect x="10.5" y="1" width="3" height="4" rx="1"/>' +
+                        '<rect x="10.5" y="1" width="3" height="4" rx="1" transform="rotate(45 12 12)"/>' +
+                        '<rect x="10.5" y="1" width="3" height="4" rx="1" transform="rotate(90 12 12)"/>' +
+                        '<rect x="10.5" y="1" width="3" height="4" rx="1" transform="rotate(135 12 12)"/>' +
+                        '<rect x="10.5" y="1" width="3" height="4" rx="1" transform="rotate(180 12 12)"/>' +
+                        '<rect x="10.5" y="1" width="3" height="4" rx="1" transform="rotate(225 12 12)"/>' +
+                        '<rect x="10.5" y="1" width="3" height="4" rx="1" transform="rotate(270 12 12)"/>' +
+                        '<rect x="10.5" y="1" width="3" height="4" rx="1" transform="rotate(315 12 12)"/>' +
+                        '<circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="2"/>' +
+                        '<circle cx="12" cy="12" r="2.2"/></svg>',
+                    expand: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                        '<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/>' +
+                        '<path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>',
+                    compress: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                        '<path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/>' +
+                        '<path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></svg>',
+                    info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                        '<circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/>' +
+                        '<circle cx="12" cy="7.5" r="0.9" fill="currentColor" stroke="none"/></svg>',
+                    map: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                        '<path d="M1 6l7-2 8 2 7-2v14l-7 2-8-2-7 2z"/><path d="M8 4v14"/><path d="M16 6v14"/></svg>'
+                };
+
+                var settingsBtn = document.getElementById('settings-btn');
+                var fullscreenBtn = document.getElementById('fullscreen-btn');
+                var infoBtn = document.getElementById('info-btn');
+                var mapBtn = document.getElementById('map-btn');
+
+                settingsBtn.innerHTML = ICONS.gear;
+                fullscreenBtn.innerHTML = ICONS.expand;
+                infoBtn.innerHTML = ICONS.info;
+                mapBtn.innerHTML = ICONS.map;
+
+                function openModal(id) { document.getElementById(id).classList.add('visible'); }
+                function closeModal(id) { document.getElementById(id).classList.remove('visible'); }
+
+                document.querySelectorAll('.hud-modal-close').forEach(function (btn) {
+                    btn.addEventListener('click', function () { closeModal(this.getAttribute('data-close')); });
+                });
+                document.querySelectorAll('.hud-modal').forEach(function (modal) {
+                    modal.addEventListener('click', function (e) {
+                        if (e.target === modal) modal.classList.remove('visible');
+                    });
+                });
+                document.addEventListener('keydown', function (e) {
+                    if (e.key !== 'Escape') return;
+                    document.querySelectorAll('.hud-modal.visible').forEach(function (m) { m.classList.remove('visible'); });
+                });
+
+                var feedbackBtn = document.getElementById('feedback-btn');
+                feedbackBtn.addEventListener('click', function () {
+                    if (document.pointerLockElement) document.exitPointerLock();
+                    openModal('feedback-panel');
+                });
+
+                // LAYAR PENUH
+                fullscreenBtn.addEventListener('click', function () {
+                    if (!document.fullscreenElement) {
+                        document.documentElement.requestFullscreen().catch(function () {});
+                    } else if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    }
+                });
+                document.addEventListener('fullscreenchange', function () {
+                    fullscreenBtn.innerHTML = document.fullscreenElement ? ICONS.compress : ICONS.expand;
+                });
+
+                // PENGATURAN — volume musik & sensitivitas mouse (tersimpan di localStorage)
+                settingsBtn.addEventListener('click', function () { openModal('settings-panel'); });
+
+                var volumeSlider = document.getElementById('volume-slider');
+                var sensitivitySlider = document.getElementById('sensitivity-slider');
+
+                var savedVolume = parseFloat(localStorage.getItem('galeria-volume'));
+                if (!isNaN(savedVolume)) {
+                    music.volume = savedVolume;
+                    volumeSlider.value = Math.round(savedVolume * 100);
+                }
+                volumeSlider.addEventListener('input', function () {
+                    var v = parseInt(volumeSlider.value, 10) / 100;
+                    music.volume = v;
+                    localStorage.setItem('galeria-volume', v);
+                });
+
+                window.MOUSE_SENSITIVITY = parseFloat(localStorage.getItem('galeria-sensitivity')) || 1;
+                sensitivitySlider.value = window.MOUSE_SENSITIVITY;
+                sensitivitySlider.addEventListener('input', function () {
+                    window.MOUSE_SENSITIVITY = parseFloat(sensitivitySlider.value);
+                    localStorage.setItem('galeria-sensitivity', window.MOUSE_SENSITIVITY);
+                });
+
+                // Skala gerakan mouse-look sesuai sensitivitas — mencegat mousemove
+                // sebelum sampai ke look-controls bawaan A-Frame (sensitivitasnya
+                // tetap/hardcoded di sana), lalu meneruskan event baru dengan
+                // movement yang sudah diskalakan.
+                document.addEventListener('mousemove', function (e) {
+                    if (window.MOUSE_SENSITIVITY === 1 || !document.pointerLockElement) return;
+                    e.stopImmediatePropagation();
+                    e.target.dispatchEvent(new MouseEvent('mousemove', {
+                        bubbles: true,
+                        cancelable: true,
+                        movementX: e.movementX * window.MOUSE_SENSITIVITY,
+                        movementY: e.movementY * window.MOUSE_SENSITIVITY,
+                        screenX: e.screenX,
+                        screenY: e.screenY,
+                        clientX: e.clientX,
+                        clientY: e.clientY
+                    }));
+                }, true);
+
+                // TENTANG
+                infoBtn.addEventListener('click', function () {
+                    var roomCount = Math.max(0, (window.GALLERY_TELEPORTS || []).length - 1);
+                    var karyaCount = window.GALLERY_KARYA_COUNT || 0;
+                    document.getElementById('about-stats').textContent =
+                        'Menampilkan ' + karyaCount + ' karya dalam ' + roomCount + ' ruangan.';
+                    openModal('about-panel');
+                });
+
+                // PETA RUANGAN
+                var mapInterval = null;
+
+                mapBtn.addEventListener('click', function () {
+                    renderMap();
+                    openModal('map-panel');
+                    if (mapInterval) clearInterval(mapInterval);
+                    mapInterval = setInterval(updateMapPlayerMarker, 300);
+                });
+
+                document.getElementById('map-panel').addEventListener('click', function (e) {
+                    var closing = e.target === this || e.target.classList.contains('hud-modal-close');
+                    if (closing && mapInterval) { clearInterval(mapInterval); mapInterval = null; }
+                });
+
+                function renderMap() {
+                    var rooms = window.GALLERY_TELEPORTS || [];
+                    var wrap = document.getElementById('map-svg-wrap');
+                    if (rooms.length === 0) { wrap.innerHTML = ''; return; }
+
+                    var rs = window.GALLERY_ROOM_SIZE || 22;
+                    var entrance = rooms[0];
+                    var roomList = rooms.slice(1);
+
+                    var zMax = entrance.z + 3;
+                    var zMin = roomList.length ? roomList[roomList.length - 1].zNorth : entrance.z - rs;
+                    var worldH = zMax - zMin;
+                    var worldW = rs + 4;
+
+                    // Peta ini skematik, bukan denah berskala akurat — sumbu X dan Z
+                    // diskalakan terpisah supaya berapa pun jumlah ruangan (yang
+                    // tersusun memanjang ke utara) tetap muat rapi di panel,
+                    // meski secara proporsi ruangan jadi tidak benar-benar persegi.
+                    var svgW = 220, svgH = 320;
+                    var scaleX = svgW / worldW;
+                    var scaleY = svgH / worldH;
+                    var offsetX = svgW / 2;
+                    var offsetY = 10;
+
+                    function toScreenX(x) { return offsetX + x * scaleX; }
+                    function toScreenY(z) { return offsetY + (z - zMin) * scaleY; }
+
+                    var svg = '<svg id="map-svg" viewBox="0 0 ' + svgW + ' ' + (svgH + 20) + '" width="100%">';
+
+                    roomList.forEach(function (room) {
+                        var x1 = toScreenX(-rs / 2), y1 = toScreenY(room.zNorth);
+                        var w = rs * scaleX, h = (room.zSouth - room.zNorth) * scaleY;
+                        svg += '<rect class="map-room" data-z="' + room.z + '" x="' + x1 + '" y="' + y1 + '" width="' + w + '" height="' + h + '" rx="3"></rect>';
+                        svg += '<text class="map-room-label" x="' + offsetX + '" y="' + (toScreenY(room.z) + 4) + '" text-anchor="middle">' + room.label + '</text>';
+                    });
+
+                    svg += '<circle class="map-entrance" cx="' + offsetX + '" cy="' + toScreenY(entrance.z) + '" r="4"></circle>';
+                    svg += '<text class="map-room-label" x="' + offsetX + '" y="' + (toScreenY(entrance.z) + 16) + '" text-anchor="middle">Masuk</text>';
+                    svg += '<circle id="map-player-dot" cx="' + offsetX + '" cy="' + toScreenY(entrance.z) + '" r="5"></circle>';
+                    svg += '</svg>';
+
+                    wrap.innerHTML = svg;
+                    wrap.dataset.scaleX = scaleX;
+                    wrap.dataset.scaleY = scaleY;
+                    wrap.dataset.offsetX = offsetX;
+                    wrap.dataset.offsetY = offsetY;
+                    wrap.dataset.zMin = zMin;
+
+                    wrap.querySelectorAll('.map-room').forEach(function (el) {
+                        el.addEventListener('click', function () {
+                            teleportTo(0, parseFloat(this.getAttribute('data-z')));
+                        });
+                    });
+
+                    updateMapPlayerMarker();
+                }
+
+                function updateMapPlayerMarker() {
+                    var dot = document.getElementById('map-player-dot');
+                    var wrap = document.getElementById('map-svg-wrap');
+                    if (!dot || !wrap.dataset.scaleX) return;
+                    var scaleX = parseFloat(wrap.dataset.scaleX);
+                    var scaleY = parseFloat(wrap.dataset.scaleY);
+                    var offsetX = parseFloat(wrap.dataset.offsetX);
+                    var offsetY = parseFloat(wrap.dataset.offsetY);
+                    var zMin = parseFloat(wrap.dataset.zMin);
+                    var pos = rig.object3D.position;
+                    dot.setAttribute('cx', offsetX + pos.x * scaleX);
+                    dot.setAttribute('cy', offsetY + (pos.z - zMin) * scaleY);
+                }
+            })();
+
+            // ==================================================
+            // NAVIGASI MOBILE: joystick + seret layar + ketuk
+            // ==================================================
+            if (isMobile) {
+                document.body.classList.add('mobile');
+                document.getElementById('controls-hint').innerHTML =
+                    'Joystick: berjalan &bull; Seret layar: melihat &bull; Ketuk lukisan: info';
+                rig.setAttribute('touch-controls', 'enabled', true);
+
+                setupJoystick();
+
+                if (sceneEl.hasLoaded) setupTouchLook();
+                else sceneEl.addEventListener('loaded', setupTouchLook);
+            }
+
+            // --- Joystick virtual (menulis ke state global JOY) ---
+            function setupJoystick() {
+                var zone = document.getElementById('joystick-zone');
+                var base = document.getElementById('joystick-base');
+                var stick = document.getElementById('joystick-stick');
+                var joyId = null;
+
+                function updateStick(t) {
+                    var rect = base.getBoundingClientRect();
+                    var cx = rect.left + rect.width / 2;
+                    var cy = rect.top + rect.height / 2;
+                    var dx = t.clientX - cx;
+                    var dy = t.clientY - cy;
+                    var max = rect.width / 2;
+                    var len = Math.hypot(dx, dy);
+                    if (len > max) {
+                        dx = dx / len * max;
+                        dy = dy / len * max;
+                    }
+                    JOY.x = dx / max;
+                    JOY.y = dy / max;
+                    stick.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+                }
+
+                function findTouch(e) {
+                    for (var i = 0; i < e.changedTouches.length; i++) {
+                        if (e.changedTouches[i].identifier === joyId) return e.changedTouches[i];
+                    }
+                    return null;
+                }
+
+                zone.addEventListener('touchstart', function (e) {
+                    e.preventDefault();
+                    if (joyId !== null) return;
+                    var t = e.changedTouches[0];
+                    joyId = t.identifier;
+                    JOY.active = true;
+                    updateStick(t);
+                }, { passive: false });
+
+                zone.addEventListener('touchmove', function (e) {
+                    e.preventDefault();
+                    var t = findTouch(e);
+                    if (t) updateStick(t);
+                }, { passive: false });
+
+                function endJoy(e) {
+                    if (!findTouch(e)) return;
+                    joyId = null;
+                    JOY.active = false;
+                    JOY.x = JOY.y = 0;
+                    stick.style.transform = 'translate(0px, 0px)';
+                }
+                zone.addEventListener('touchend', endJoy);
+                zone.addEventListener('touchcancel', endJoy);
+            }
+
+            // --- Seret layar untuk melihat + ketuk untuk interaksi ---
+            function setupTouchLook() {
+                var cameraEl = document.getElementById('camera');
+                // Matikan drag bawaan look-controls agar tidak dobel,
+                // lalu kendalikan yaw & pitch sendiri.
+                cameraEl.setAttribute('look-controls', 'touchEnabled', false);
+                var lc = cameraEl.components['look-controls'];
+                var canvas = sceneEl.canvas;
+
+                // Sembunyikan cursor ring tengah (tidak relevan di mobile)
+                var ringCursor = document.getElementById('cursor');
+                if (ringCursor) ringCursor.setAttribute('visible', 'false');
+
+                var lookId = null, lastX = 0, lastY = 0, startX = 0, startY = 0, dragged = false;
+                var SENS = 0.0045;
+
+                function findTouch(e) {
+                    for (var i = 0; i < e.changedTouches.length; i++) {
+                        if (e.changedTouches[i].identifier === lookId) return e.changedTouches[i];
+                    }
+                    return null;
+                }
+
+                canvas.addEventListener('touchstart', function (e) {
+                    if (lookId !== null) return;
+                    var t = e.changedTouches[0];
+                    lookId = t.identifier;
+                    lastX = startX = t.clientX;
+                    lastY = startY = t.clientY;
+                    dragged = false;
+                }, { passive: true });
+
+                canvas.addEventListener('touchmove', function (e) {
+                    var t = findTouch(e);
+                    if (!t || !lc) return;
+                    lc.yawObject.rotation.y -= (t.clientX - lastX) * SENS;
+                    lc.pitchObject.rotation.x -= (t.clientY - lastY) * SENS;
+                    lc.pitchObject.rotation.x =
+                        Math.max(-1.45, Math.min(1.45, lc.pitchObject.rotation.x));
+                    lastX = t.clientX;
+                    lastY = t.clientY;
+                    if (Math.hypot(t.clientX - startX, t.clientY - startY) > 12) dragged = true;
+                }, { passive: true });
+
+                function endLook(e) {
+                    var t = findTouch(e);
+                    if (!t) return;
+                    if (!dragged) tapRaycast(t.clientX, t.clientY);
+                    lookId = null;
+                }
+                canvas.addEventListener('touchend', endLook);
+                canvas.addEventListener('touchcancel', function (e) {
+                    if (findTouch(e)) lookId = null;
+                });
+
+                // Raycast manual dari titik ketukan ke objek .clickable
+                var raycaster = new THREE.Raycaster();
+                var tapVec = new THREE.Vector2();
+
+                function tapRaycast(x, y) {
+                    var camObj = cameraEl.getObject3D('camera');
+                    if (!camObj) return;
+                    tapVec.set(
+                        (x / window.innerWidth) * 2 - 1,
+                        -(y / window.innerHeight) * 2 + 1
+                    );
+                    raycaster.setFromCamera(tapVec, camObj);
+
+                    var best = null;
+                    var bestDist = 25; // jangkauan ketuk maksimum (meter)
+                    document.querySelectorAll('.clickable').forEach(function (el) {
+                        var hits = raycaster.intersectObject(el.object3D, true);
+                        if (hits.length && hits[0].distance < bestDist) {
+                            bestDist = hits[0].distance;
+                            best = el;
+                        }
+                    });
+                    if (best) best.emit('click');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

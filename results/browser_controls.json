@@ -1,0 +1,364 @@
+{
+  "environment": {
+    "browser": "155.0.8059.84",
+    "viewport": {
+      "width": 960,
+      "height": 600
+    },
+    "platform": "darwin"
+  },
+  "protocol": {
+    "canvasSelector": ".a-canvas",
+    "repetitions": 3,
+    "inputRecords": 16,
+    "initialRig": [
+      0,
+      0,
+      10
+    ],
+    "initialCamera": [
+      0,
+      1.6,
+      0
+    ],
+    "initialVelocity": [
+      0,
+      0,
+      0
+    ],
+    "keyboardDurationMs": 900,
+    "afterKeyup": "reset WASD velocity to zero and disable WASD; preserve camera displacement before teleport",
+    "teleportTarget": [
+      0,
+      0,
+      -21
+    ],
+    "sensitivityControls": [
+      1,
+      1.5
+    ],
+    "mouseMovement": [
+      4,
+      2
+    ],
+    "pointerLock": "controlled getter with a synthetic event; no real pointer-lock gesture",
+    "scope": "Frontend controls with fixtures; no performance estimate"
+  },
+  "summary": {
+    "navigationPatternPasses": 3,
+    "baselineDeliveries": [
+      1,
+      1,
+      1
+    ],
+    "nondefaultDeliveries": [
+      0,
+      0,
+      0
+    ],
+    "stackErrorRuns": 3,
+    "cameraLocalZRange": {
+      "min": -2.8525305143022233,
+      "max": -0.005625
+    }
+  },
+  "runs": [
+    {
+      "repetition": 1,
+      "initial": {
+        "rig": {
+          "x": 0,
+          "y": 0,
+          "z": 10
+        },
+        "camera": {
+          "x": 0,
+          "y": 1.6,
+          "z": 0
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "undefined": 0
+        },
+        "aframe": "1.5.0"
+      },
+      "keyboard": {
+        "key": "w",
+        "requestedDurationMs": 900,
+        "keyupFollowedByVelocityReset": true,
+        "velocityBeforeReset": {
+          "x": 0,
+          "y": 0,
+          "z": -6.020739100494489,
+          "undefined": 0
+        },
+        "velocityAfterReset": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "undefined": 0
+        },
+        "rig": {
+          "x": 0,
+          "y": 0,
+          "z": 10
+        },
+        "camera": {
+          "x": 0,
+          "y": 1.6,
+          "z": -2.8525305143022233
+        }
+      },
+      "teleport": {
+        "rig": {
+          "x": 0,
+          "y": 0,
+          "z": -21
+        },
+        "cameraLocal": {
+          "x": 0,
+          "y": 1.6,
+          "z": -2.8525305143022233
+        },
+        "cameraWorld": {
+          "x": 0,
+          "y": 1.6,
+          "z": -23.852530514302224
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "undefined": 0
+        }
+      },
+      "sensitivities": [
+        {
+          "sensitivity": 1,
+          "delivered": 1,
+          "last": {
+            "movementX": 4,
+            "movementY": 2
+          },
+          "injectedPointerLock": true,
+          "pageErrors": []
+        },
+        {
+          "sensitivity": 1.5,
+          "delivered": 0,
+          "last": null,
+          "injectedPointerLock": true,
+          "pageErrors": [
+            "Maximum call stack size exceeded.",
+            "Maximum call stack size exceeded.",
+            "Maximum call stack size exceeded.",
+            "Maximum call stack size exceeded.",
+            "Maximum call stack size exceeded."
+          ]
+        }
+      ],
+      "errorsBeforeSensitivity": [],
+      "navigationPatternConfirmed": true
+    },
+    {
+      "repetition": 2,
+      "initial": {
+        "rig": {
+          "x": 0,
+          "y": 0,
+          "z": 10
+        },
+        "camera": {
+          "x": 0,
+          "y": 1.6,
+          "z": 0
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "undefined": 0
+        },
+        "aframe": "1.5.0"
+      },
+      "keyboard": {
+        "key": "w",
+        "requestedDurationMs": 900,
+        "keyupFollowedByVelocityReset": true,
+        "velocityBeforeReset": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "undefined": 0
+        },
+        "velocityAfterReset": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "undefined": 0
+        },
+        "rig": {
+          "x": 0,
+          "y": 0,
+          "z": 10
+        },
+        "camera": {
+          "x": 0,
+          "y": 1.6,
+          "z": -0.005625
+        }
+      },
+      "teleport": {
+        "rig": {
+          "x": 0,
+          "y": 0,
+          "z": -21
+        },
+        "cameraLocal": {
+          "x": 0,
+          "y": 1.6,
+          "z": -0.005625
+        },
+        "cameraWorld": {
+          "x": 0,
+          "y": 1.6,
+          "z": -21.005625
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "undefined": 0
+        }
+      },
+      "sensitivities": [
+        {
+          "sensitivity": 1,
+          "delivered": 1,
+          "last": {
+            "movementX": 4,
+            "movementY": 2
+          },
+          "injectedPointerLock": true,
+          "pageErrors": []
+        },
+        {
+          "sensitivity": 1.5,
+          "delivered": 0,
+          "last": null,
+          "injectedPointerLock": true,
+          "pageErrors": [
+            "Maximum call stack size exceeded.",
+            "Maximum call stack size exceeded.",
+            "Maximum call stack size exceeded.",
+            "Maximum call stack size exceeded.",
+            "Maximum call stack size exceeded."
+          ]
+        }
+      ],
+      "errorsBeforeSensitivity": [],
+      "navigationPatternConfirmed": true
+    },
+    {
+      "repetition": 3,
+      "initial": {
+        "rig": {
+          "x": 0,
+          "y": 0,
+          "z": 10
+        },
+        "camera": {
+          "x": 0,
+          "y": 1.6,
+          "z": 0
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "undefined": 0
+        },
+        "aframe": "1.5.0"
+      },
+      "keyboard": {
+        "key": "w",
+        "requestedDurationMs": 900,
+        "keyupFollowedByVelocityReset": true,
+        "velocityBeforeReset": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "undefined": 0
+        },
+        "velocityAfterReset": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "undefined": 0
+        },
+        "rig": {
+          "x": 0,
+          "y": 0,
+          "z": 10
+        },
+        "camera": {
+          "x": 0,
+          "y": 1.6,
+          "z": -0.01132813194995976
+        }
+      },
+      "teleport": {
+        "rig": {
+          "x": 0,
+          "y": 0,
+          "z": -21
+        },
+        "cameraLocal": {
+          "x": 0,
+          "y": 1.6,
+          "z": -0.01132813194995976
+        },
+        "cameraWorld": {
+          "x": 0,
+          "y": 1.6,
+          "z": -21.01132813194996
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "undefined": 0
+        }
+      },
+      "sensitivities": [
+        {
+          "sensitivity": 1,
+          "delivered": 1,
+          "last": {
+            "movementX": 4,
+            "movementY": 2
+          },
+          "injectedPointerLock": true,
+          "pageErrors": []
+        },
+        {
+          "sensitivity": 1.5,
+          "delivered": 0,
+          "last": null,
+          "injectedPointerLock": true,
+          "pageErrors": [
+            "Maximum call stack size exceeded.",
+            "Maximum call stack size exceeded.",
+            "Maximum call stack size exceeded.",
+            "Maximum call stack size exceeded.",
+            "Maximum call stack size exceeded."
+          ]
+        }
+      ],
+      "errorsBeforeSensitivity": [],
+      "navigationPatternConfirmed": true
+    }
+  ]
+}

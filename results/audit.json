@@ -1,0 +1,10 @@
+{
+  "python": "3.12.14",
+  "raw_records": 17,
+  "primary_records": 16,
+  "available": 16,
+  "dimension_matches": 16,
+  "total_bytes": 6265674,
+  "over_1400": 10,
+  "missing_year": 1
+}
